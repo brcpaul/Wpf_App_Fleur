@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+Wpf_App_Fleur/Wpf_App_Fleur.csproj
