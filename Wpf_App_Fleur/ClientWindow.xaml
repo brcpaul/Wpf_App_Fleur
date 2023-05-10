@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="Wpf_App_Fleur.ClientWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Wpf_App_Fleur"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ClientWindow"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="White"
+    ShowsNavigationUI="False"
+    mc:Ignorable="d">
+
+    <Grid>
+        <!--
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Width="150"
+                Height="25"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Vos Informations" />
+            <Button
+                Width="150"
+                Height="25"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Vos Commandes" />
+            <Button
+                Width="150"
+                Height="25"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Déconnexion" />
+        </StackPanel>-->
+        <TabControl>
+            <TabItem
+                Width="150"
+                Height="25"
+                Header="Vos Informations">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel Margin="50">
+                        <Label Margin="50,50,150,20" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem
+                Width="150"
+                Height="25"
+                Header="Vos Commandes">
+                <Grid Background="#FFE5E5E5">
+                    <DataGridCell Margin="20" Background="DarkSlateGray" />
+                </Grid>
+            </TabItem>
+            <TabItem
+                Width="150"
+                Height="25"
+                Header="Déconnection">
+                <Button Content="Déconnection" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>
