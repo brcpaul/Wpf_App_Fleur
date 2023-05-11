@@ -14,7 +14,25 @@
     <Grid>
         <TabControl>
             <TabItem Header="Accueil">
-                <Grid Background="#FFE5E5E5" />
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel Margin="20" Orientation="Horizontal">
+                        <Button
+                            Width="200"
+                            Height="40"
+                            Margin="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="btn_clickExportXml"
+                            Content="Export en format Xml" />
+                        <Button
+                            Width="200"
+                            Height="40"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="btn_clickExportJson"
+                            Content="Export en format Xml" />
+                    </StackPanel>
+                </Grid>
 
             </TabItem>
             <TabItem Header="Clients">
