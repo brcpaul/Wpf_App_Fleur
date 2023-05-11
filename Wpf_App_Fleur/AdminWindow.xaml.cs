@@ -55,7 +55,7 @@ namespace Wpf_App_Fleur
                     etatCommande = "CAL";
                     break;
                 case "Commande livrée":
-                    etatCommande = "CAL";
+                    etatCommande = "CL";
                     break;
             }
 
