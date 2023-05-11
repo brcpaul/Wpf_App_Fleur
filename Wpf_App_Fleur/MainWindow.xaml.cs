@@ -91,7 +91,9 @@ namespace Wpf_App_Fleur
             {
                 connection_utili.Open();
                 MySqlCommand command = connection_utili.CreateCommand();
-                command.CommandText = $"select count(*) from client where id_client = {username} and mdp = {password};";
+                command.CommandText = $"select count(*) from client where mail = @username and mdp = @password;";
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", username);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     int count = Convert.ToInt32(reader.GetValue(0));
