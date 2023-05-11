@@ -29,7 +29,6 @@ namespace Wpf_App_Fleur
         public ClientWindow(MySqlConnection connexion)
         {
             InitializeComponent();
-            connexion.Open();
             MySqlCommand command = connexion.CreateCommand();
             command.CommandText = "select * from client";
             using (MySqlDataReader reader = command.ExecuteReader())
@@ -43,7 +42,6 @@ namespace Wpf_App_Fleur
                 addresse_client.Text = reader.GetValue(5).ToString();
                 statut_client.Text = reader.GetValue(6).ToString();
             }
-            connexion.Close();
             command.Dispose();
         }
         private void BtnQuitterClick(object sender, RoutedEventArgs e)

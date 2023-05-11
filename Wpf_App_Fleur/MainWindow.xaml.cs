@@ -17,6 +17,7 @@ using System.Xml;
 using System.Data;
 using System.Text.Json;
 using MySql.Data.MySqlClient;
+using System.Data.Common;
 
 namespace Wpf_App_Fleur
 {
@@ -93,9 +94,10 @@ namespace Wpf_App_Fleur
                 MySqlCommand command = connection_utili.CreateCommand();
                 command.CommandText = $"select count(*) from client where mail = @username and mdp = @password;";
                 command.Parameters.AddWithValue("@username", username);
-                command.Parameters.AddWithValue("@password", username);
+                command.Parameters.AddWithValue("@password", password);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
+                    reader.Read();
                     int count = Convert.ToInt32(reader.GetValue(0));
                     if (count>0)
                     {
@@ -105,6 +107,7 @@ namespace Wpf_App_Fleur
                     }
                     else
                     {
+                        MessageBox.Show(count.ToString());
                         //IsReadOnly = false;
                     }
                 }

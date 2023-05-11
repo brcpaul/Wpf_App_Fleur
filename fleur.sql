@@ -80,3 +80,6 @@ CREATE  TABLE IF NOT EXISTS commande (
     CONSTRAINT id_number_boutique FOREIGN KEY (id_boutique) REFERENCES boutique (id_boutique),
 	PRIMARY KEY (id_commande));
 
+CREATE USER 'bozo'@'localhost' IDENTIFIED BY 'bozo';
+GRANT SELECT ON * TO 'bozo'@'localhost';
+FLUSH PRIVILEGES;
