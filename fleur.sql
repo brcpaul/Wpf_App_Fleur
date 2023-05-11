@@ -83,3 +83,30 @@ CREATE  TABLE IF NOT EXISTS commande (
 CREATE USER 'bozo'@'localhost' IDENTIFIED BY 'bozo';
 GRANT SELECT ON * TO 'bozo'@'localhost';
 FLUSH PRIVILEGES;
+
+DELIMITER //     #permet la création du déclencheur (ou trigger) avec plusieurs instructions
+CREATE TRIGGER verifier_statut_fidelite_client AFTER INSERT ON commande
+FOR EACH ROW
+BEGIN
+    #Calcul du nombre total de bouquets achetés par mois
+    SET @total_bouquets_mois = (
+        SELECT COUNT(*)
+        FROM commande
+        WHERE id_client = NEW.id_client
+        AND MONTH(date_commande) = MONTH(CURRENT_DATE())
+    );
+
+    #Mise à jour du statut du client en fonction du nombre de bouquets achetés par mois
+    #Fidélité OR si le client achète plus de 5 bouquets par mois, alors une réduction de 15% est offerte sur chaque bouquet 
+    IF @total_bouquets_mois > 5 THEN
+        UPDATE client
+        SET statut = 'OR'
+        WHERE id_client = NEW.id_client;
+    #Fidélité Bronze si le client achète en moyenne un bouquet par mois alors une réduction de 5% est offerte 
+    ELSEIF @total_bouquets_mois >= 1 THEN
+        UPDATE client
+        SET statut = 'BRONZE'
+        WHERE id_client = NEW.id_client;
+    END IF;
+END //
+DELIMITER ;     #on rétablit le délimiteur à sa valeur par défaut ';'
