@@ -40,11 +40,107 @@
                 Height="25"
                 Header="Vos Informations">
                 <Grid Background="#FFE5E5E5">
-                    <StackPanel Margin="50">
-                        <Label Margin="50,50,150,20" />
+                    <StackPanel Orientation="Vertical">
+                        <Label
+                            Margin="0,20,0,0"
+                            HorizontalContentAlignment="Center"
+                            Content="Vos données personnelles"
+                            FontSize="18" />
+                        <Separator Margin="50,0,50,20" HorizontalContentAlignment="Center" />
+                        <StackPanel Margin="10,0,10,0" Orientation="Horizontal">
+                            <StackPanel Margin="30,0,20,0">
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="ID number"
+                                    FontSize="14" />
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="Nom"
+                                    FontSize="14" />
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="Prénom"
+                                    FontSize="14" />
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="Téléphone"
+                                    FontSize="14" />
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="Email"
+                                    FontSize="14" />
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="Adresse"
+                                    FontSize="14" />
+                                <Label
+                                    Height="30"
+                                    Margin="0"
+                                    Content="Statut client"
+                                    FontSize="14" />
+                            </StackPanel>
+                            <StackPanel Margin="80,0,0,0">
+                                <TextBox
+                                    x:Name="id_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite" />
+                                <TextBox
+                                    x:Name="prenom_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
+                                    x:Name="nom_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
+                                    x:Name="tel_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
+                                    x:Name="mail_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
+                                    x:Name="addresse_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
+                                    x:Name="statut_client"
+                                    Width="100"
+                                    Height="26"
+                                    Margin="2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </TabItem>
+
+
             <TabItem
                 Width="150"
                 Height="25"

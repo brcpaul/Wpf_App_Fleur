@@ -71,8 +71,8 @@ namespace Wpf_App_Fleur
             }*/
 
             //Recuperation de l'identifiant et du mot de passe sasis
-            string username = "root";//txtUsername.Text;
-            string password = "root";//txtPassword.Password;
+            string username = txtUsername.Text; //"bozo";
+            string password = txtPassword.Password; //"bozo";
 
             if(username == "root" && password=="root")
             {
@@ -91,20 +91,37 @@ namespace Wpf_App_Fleur
             {
                 connection_utili.Open();
                 MySqlCommand command = connection_utili.CreateCommand();
-                command.CommandText = "select mail, mdp from client";
+                command.CommandText = $"select count(*) from client where id_client = {username} and mdp = {password};";
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    if (username == Convert.ToString(reader.GetValue(0)) && password == Convert.ToString(reader.GetValue(1)))
+                    int count = Convert.ToInt32(reader.GetValue(0));
+                    if (count>0)
                     {
                         ClientWindow client_window = new ClientWindow(connection_utili);
                         Window.GetWindow(this).Content = client_window;
                         //Close();
+                    }
+                    else
+                    {
+                        //IsReadOnly = false;
                     }
                 }
                 connection_utili.Close();
                 command.Dispose();
             }
         }
+        /*
+        private bool isReadOnly;
+        private bool IsReadOnly
+        {
+            get { return isReadOnly; }
+            set
+            {
+                isReadOnly = value;
+                OnPropertyChanged(nameof(IsReadOnly));
+            }
+        }
+        */
         private void show_password_checked(object sender, RoutedEventArgs e)
         {
             //txtPassword.PasswordChar = '\0';

@@ -32,6 +32,8 @@ namespace Wpf_App_Fleur
         }
         private void BtnQuitterClick(object sender, RoutedEventArgs e)
         {
+            MainWindow main = new MainWindow();
+            main.Show();
             Window.GetWindow(this).Close();
         }
     }

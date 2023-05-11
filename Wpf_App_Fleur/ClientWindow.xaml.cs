@@ -29,10 +29,29 @@ namespace Wpf_App_Fleur
         public ClientWindow(MySqlConnection connexion)
         {
             InitializeComponent();
+            connexion.Open();
+            MySqlCommand command = connexion.CreateCommand();
+            command.CommandText = "select * from client";
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                //id_client.Text = Convert.ToString(reader.GetValue(0));
+                id_client.Text = reader.GetValue(0).ToString();
+                nom_client.Text = reader.GetValue(1).ToString();
+                prenom_client.Text = reader.GetValue(2).ToString();
+                tel_client.Text = reader.GetValue(3).ToString();
+                mail_client.Text = reader.GetValue(4).ToString();
+                addresse_client.Text = reader.GetValue(5).ToString();
+                statut_client.Text = reader.GetValue(6).ToString();
+            }
+            connexion.Close();
+            command.Dispose();
         }
         private void BtnQuitterClick(object sender, RoutedEventArgs e)
         {
+            MainWindow main = new MainWindow();
+            main.Show();
             Window.GetWindow(this).Close();
         }
+
     }
 }

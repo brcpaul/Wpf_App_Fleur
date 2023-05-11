@@ -55,6 +55,17 @@
                     Background="GhostWhite"
                     Click="BtnConnectionClick"
                     Content="Connexion" />
+                <!--
+                <Border
+                    BorderBrush="Red"
+                    BorderThickness="0"
+                    Visibility="{Binding IsInvalid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBox
+                        HorizontalAlignment="Center"
+                        BorderThickness="0"
+                        IsReadOnly="{Binding IsReadOnly}"
+                        Text="Username or Password incorrect" />
+                </Border>-->
                 <Button
                     Name="btnQuitter"
                     Width="50"
