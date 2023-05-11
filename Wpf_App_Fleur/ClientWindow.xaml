@@ -57,7 +57,7 @@
                 Width="150"
                 Height="25"
                 Header="Déconnection">
-                <Button Content="Déconnection" />
+                <Button Click="BtnQuitterClick" Content="Déconnection" />
             </TabItem>
         </TabControl>
     </Grid>

@@ -55,7 +55,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Déconnection">
-                <Button Content="Déconnection" />
+                <Button Click="BtnQuitterClick" Content="Déconnection" />
             </TabItem>
         </TabControl>
     </Grid>

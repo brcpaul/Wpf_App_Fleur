@@ -30,5 +30,9 @@ namespace Wpf_App_Fleur
         {
             InitializeComponent();
         }
+        private void BtnQuitterClick(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Close();
+        }
     }
 }
