@@ -69,7 +69,7 @@
                 <MenuItem Header="_Etat des stocks" Click="Clients_Click"></MenuItem>
                 <MenuItem Header="_Commandes" Click="Clients_Click"></MenuItem>
                 <MenuItem Header="_Déconnection" Margin="0 250 0 0" Click="Clients_Click" FontWeight="Bold"></MenuItem>
-            </Menu>
+            </Menu> 
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <ContentControl x:Name="contentControl">
