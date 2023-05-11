@@ -36,7 +36,6 @@ namespace Wpf_App_Fleur
             MySqlCommand command;
             DataTable dataTable;
             RadioButton ck = sender as RadioButton;
-   
 
             string etatCommande="VINV";
             switch (ck.Content)
@@ -54,7 +53,7 @@ namespace Wpf_App_Fleur
                     etatCommande = "CAL";
                     break;
                 case "Commande livrée":
-                    etatCommande = "CL";
+                    etatCommande = "CAL";
                     break;
             }
 
@@ -72,7 +71,6 @@ namespace Wpf_App_Fleur
             command = new MySqlCommand(commande_text, this.connexion);
             dataTable = new DataTable();
             dataTable.Load(command.ExecuteReader());
-            command.Dispose();
             commandesDataGrid.ItemsSource = new DataView(dataTable);
         }
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -81,15 +79,56 @@ namespace Wpf_App_Fleur
             MySqlCommand command;
             switch (((TabItem)tabControl.SelectedItem).Header)
             {
-                case "Clients":
+                case "Clients ":
                     command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
-                    command.Dispose();  
                     clientsDataGrid.ItemsSource = new DataView(dataTable);
                     break;
+                case "Statistiques":
+                    command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    //prix_moyenTxt = new DataView(dataTable);
+                    command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Month(date_commande) = Month(now()) " +
+                        "Group by id_client Order by somme_total_depense DESC limit 1; ", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    best_c_moisGrid.ItemsSource = new DataView(dataTable);
+                    command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Year(date_commande) = Year(now()) " +
+                        "Group by id_client Order by somme_total_depense DESC limit 1;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    best_c_anneeGrid.ItemsSource = new DataView(dataTable);
+                    command = new MySqlCommand("SELECT bs.nom, COUNT(c.id_bs) as nombre_commandes FROM bouquet_standard bs " +
+                        "JOIN commande c ON bs.id_bs = c.id_bs " +
+                        "GROUP BY bs.nom ORDER BY nombre_commandes DESC LIMIT 1;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    bs_sucessGrid.ItemsSource = new DataView(dataTable);
+                    command = new MySqlCommand("SELECT b.id_boutique AS magasin, SUM(c.prix_tot) AS chiffre_affaires FROM commande c " +
+                        "INNER JOIN boutique b ON id_boutique = b.id_boutique " +
+                        "GROUP BY b.id_boutique ORDER BY chiffre_affaires DESC; ", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    best_ca_shopGrid.ItemsSource = new DataView(dataTable);
+                    command = new MySqlCommand("select nom, count(nom) as vente from produit natural join commande group by nom order by vente asc limit 1;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    less_sell_exoticGrid.ItemsSource = new DataView(dataTable);
+                    command.Dispose();
+                    break;
+                default:
+                    break;
             };
-
+        }
+        public void prix_moyen_du_bouquet_achete(MySqlConnection connection)
+        {
+            MySqlCommand command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            commandesDataGrid.ItemsSource = new DataView(dataTable);
+            command.Dispose();
         }
 
         private void commandesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

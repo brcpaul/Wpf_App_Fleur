@@ -22,7 +22,7 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Produits" Height="22" Margin="-2,-2,-2,0" VerticalAlignment="Top">
+            <TabItem Header="Produits" VerticalAlignment="Top">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="produitsDataGrid">
                     </DataGrid>
@@ -33,22 +33,121 @@
                     <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
                 </Grid>
             </TabItem>
+            <TabItem
+                VerticalAlignment="Top"
+                Header="Statistiques">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel Orientation="Vertical">
+                        <Label
+                            Margin="0,20,0,0"
+                            HorizontalContentAlignment="Center"
+                            Content="Ensemble des Statistiques"
+                            FontSize="18" />
+                        <Separator Margin="50,0,50,20" HorizontalContentAlignment="Center" />
+                        <StackPanel Margin="10,0,10,0" Orientation="Horizontal">
+                            <StackPanel Margin="30,0,20,0">
+                                <Label
+                                    Height="50"
+                                    Margin="0"
+                                    Content="Prix moyen du bouquet acheté"
+                                    FontSize="14" />
+                                <Label
+                                    Height="50"
+                                    Margin="0"
+                                    Content="Meilleur client du mois"
+                                    FontSize="14" />
+                                <Label
+                                    Height="50"
+                                    Margin="0"
+                                    Content="Meilleur client de l'année"
+                                    FontSize="14" />
+                                <Label
+                                    Height="50"
+                                    Margin="0"
+                                    Content="Bouquet standard ayant le plus de succès"
+                                    FontSize="14" />
+                                <Label
+                                    Height="50"
+                                    Margin="0"
+                                    Content="Magasin générant le plus de chiffre d'affaires"
+                                    FontSize="14" />
+                                <Label
+                                    Height="50"
+                                    Margin="0"
+                                    Content="Fleur exotique la moins vendue"
+                                    FontSize="14" />
+                            </StackPanel>
+                            <StackPanel Margin="80,0,0,0">
+                                <TextBox
+                                    x:Name="prix_moyenTxt"
+                                    Width="100"
+                                    Height="50"
+                                    Margin="0"
+                                    Background="DarkSlateGray" />
+                                <DataGrid
+                                    x:Name="best_c_moisGrid"
+                                    Width="100"
+                                    Height="50"
+                                    Margin="0"
+                                    Background="DarkSlateGray"
+                                    FontSize="7" />
+                                <DataGrid
+                                    x:Name="best_c_anneeGrid"
+                                    Width="100"
+                                    Height="50"
+                                    Margin="0"
+                                    Background="DarkSlateGray"
+                                    FontSize="7" />
+                                <DataGrid
+                                    x:Name="bs_sucessGrid"
+                                    Width="100"
+                                    Height="50"
+                                    Margin="0"
+                                    Background="DarkSlateGray"
+                                    FontSize="7" />
+                                <DataGrid
+                                    x:Name="best_ca_shopGrid"
+                                    Width="100"
+                                    Height="50"
+                                    Margin="0"
+                                    Background="DarkSlateGray"
+                                    FontSize="7" />
+                                <DataGrid
+                                    x:Name="less_sell_exoticGrid"
+                                    Width="100"
+                                    Height="50"
+                                    Margin="0"
+                                    Background="DarkSlateGray"
+                                    FontSize="7" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
             <TabItem Header="Commandes">
                 <Grid Background="#FFE5E5E5">
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel Margin="0 5">
-                            <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande standard à vérifier</RadioButton>
-                            <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande personnalisée à vérifier</RadioButton>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock>Filtrer par type de commande</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Margin="0 5">
+                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande standard à vérifier</RadioButton>
+                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande personnalisée à vérifier</RadioButton>
+                                </StackPanel>
+                                <StackPanel Margin="0 5">
+                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande complète</RadioButton>
+                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande à livrer</RadioButton>
+                                </StackPanel>
+                                <StackPanel Margin="0 5">
+                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande livrée</RadioButton>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Margin="0 5">
-                            <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande complète</RadioButton>
-                            <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande à livrer</RadioButton>
-                        </StackPanel>
-                        <StackPanel Margin="0 5">
-                            <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande livrée</RadioButton>
+                        <StackPanel>
+                            <TextBlock>Filtrer par Boutique</TextBlock>
                         </StackPanel>
                     </StackPanel>
-                    <Grid Margin="0,40,0,0">
+                    <Grid Margin="0,60,0,0">
                         <DataGrid x:Name="commandesDataGrid"/>
                     </Grid>
                 </Grid>

@@ -22,7 +22,7 @@
             CornerRadius="10">
             <StackPanel Margin="20">
                 <Label
-                    Margin="90,15,90,15"
+                    Margin="30,15,90,15"
                     HorizontalAlignment="Center"
                     HorizontalContentAlignment="center"
                     Content="Login"
@@ -38,12 +38,32 @@
                     Name="txtPassword"
                     Background="GhostWhite"
                     FontSize="18" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        x:Name="ShowPasswordCheckBox"
+                        Width="15"
+                        Height="15"
+                        Margin="10,11,0,10"
+                        HorizontalAlignment="Left"
+                        Checked="show_password_checked"
+                        Unchecked="show_password_unchecked" />
+                    <Label Margin="0,5,10,5" Content="show password" />
+                </StackPanel>
                 <Button
                     Name="btnConnection"
-                    Margin="80,30"
+                    Margin="80,0"
                     Background="GhostWhite"
                     Click="BtnConnectionClick"
-                    Content="Connection" />
+                    Content="Connexion" />
+                <Button
+                    Name="btnQuitter"
+                    Width="50"
+                    Height="20"
+                    Margin="20"
+                    HorizontalAlignment="Right"
+                    Background="GhostWhite"
+                    Click="BtnQuitterClick"
+                    Content="Quitter " />
                 <!--<Separator Margin="0 50 0 0"></Separator>-->
             </StackPanel>
         </Border>

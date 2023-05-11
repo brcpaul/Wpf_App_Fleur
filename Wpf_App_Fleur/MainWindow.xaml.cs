@@ -91,7 +91,7 @@ namespace Wpf_App_Fleur
             {
                 connection_utili.Open();
                 MySqlCommand command = connection_utili.CreateCommand();
-                command.CommandText = $"";
+                command.CommandText = "select mail, mdp from client";
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (username == Convert.ToString(reader.GetValue(0)) && password == Convert.ToString(reader.GetValue(1)))
@@ -105,15 +105,17 @@ namespace Wpf_App_Fleur
                 command.Dispose();
             }
         }
-        /*
-        private void checkShowPassword_Checked(object sender, RoutedEventArgs e)
+        private void show_password_checked(object sender, RoutedEventArgs e)
         {
-            name.PasswordChar = '\0';
+            //txtPassword.PasswordChar = '\0';
         }
-        private void checkShowPassword_Unchecked(object sender, RoutedEventArgs e)
+        private void show_password_unchecked(object sender, RoutedEventArgs e)
         {
-            name.PasswordChar = '*';
+            //txtPassword.PasswordChar = '*';
         }
-        */
+        private void BtnQuitterClick(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Close();
+        }
     }
 }
