@@ -26,18 +26,20 @@ namespace Wpf_App_Fleur
     public partial class AdminWindow : Page
     {
         private MySqlConnection connexion;
+        private string currentPage;
         public AdminWindow(MySqlConnection connexion)
         {
             InitializeComponent();
-            this.connexion = connexion; 
+            this.connexion = connexion;
+            this.currentPage = null;
         }
-        public void ShowCommandes(object sender=null, RoutedEventArgs e=null)
+        public void ShowCommandes(object sender = null, RoutedEventArgs e = null)
         {
             MySqlCommand command;
             DataTable dataTable;
             RadioButton ck = sender as RadioButton;
 
-            string etatCommande="VINV";
+            string etatCommande = "VINV";
             switch (ck.Content)
             {
                 case "Commande standard à vérifier":
@@ -65,7 +67,7 @@ namespace Wpf_App_Fleur
                 JOIN boutique bo ON co.id_boutique=bo.id_boutique
                 LEFT JOIN composition_bouquet cb ON co.est_standard=false and cb.id_bp=co.id_bouquet
                 LEFT JOIN produit pr ON co.est_standard=false and cb.id_produit=pr.id_produit
-                WHERE etat='"+etatCommande+@"'
+                WHERE etat='" + etatCommande + @"'
                 GROUP BY id_commande";
 
             command = new MySqlCommand(commande_text, this.connexion);
@@ -73,13 +75,57 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             commandesDataGrid.ItemsSource = new DataView(dataTable);
         }
+
+        public void SearchClientByName(object sender, RoutedEventArgs e)
+        {
+            MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client WHERE nom LIKE '%" + SearchClientName.Text + "%'", this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            clientsDataGrid.ItemsSource = new DataView(dataTable);
+        }
+        public void SearchClientByID(object sender, RoutedEventArgs e)
+        {
+            MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client WHERE id_client LIKE '%" + SearchClientID.Text + "%'", this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            clientsDataGrid.ItemsSource = new DataView(dataTable);
+        }
+        public void SelectedClientChanged(object sender, EventArgs e)
+        {
+            string client_id="";
+            try
+            {
+                client_id = ((DataRowView)clientsDataGrid.SelectedItem)?["id_client"]?.ToString();
+            } 
+            catch {
+                clientDataGrid.ItemsSource=null;
+            }
+            if (client_id=="") return;
+            string commande_text = @"use fleur;
+                SELECT id_commande,MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Composition perso', MIN(co.date_commande) as 'Date de commande', MIN(co.date_livraison) as 'Date de livraison', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
+                LEFT JOIN bouquet_perso bp ON co.id_bouquet=bp.id_bp
+                LEFT JOIN bouquet_standard bs ON co.id_bouquet=bs.id_bs
+                JOIN client cl ON cl.id_client=co.id_client
+                JOIN boutique bo ON co.id_boutique=bo.id_boutique
+                LEFT JOIN composition_bouquet cb ON co.est_standard=false and cb.id_bp=co.id_bouquet
+                LEFT JOIN produit pr ON co.est_standard=false and cb.id_produit=pr.id_produit
+                WHERE co.id_client='" + client_id + @"'
+                GROUP BY id_commande";
+
+            MySqlCommand command = new MySqlCommand(commande_text, this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            clientDataGrid.ItemsSource = new DataView(dataTable);
+        }
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.currentPage == (string)((TabItem)tabControl.SelectedItem).Header) return;
+            this.currentPage = (string)((TabItem)tabControl.SelectedItem).Header;
             DataTable dataTable;
             MySqlCommand command;
-            switch (((TabItem)tabControl.SelectedItem).Header)
+            switch (this.currentPage)
             {
-                case "Clients ":
+                case "Clients":
                     command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());

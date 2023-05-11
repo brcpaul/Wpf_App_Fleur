@@ -18,8 +18,41 @@
             </TabItem>
             <TabItem Header="Clients">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="clientsDataGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="0.5*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="10">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Rechercher un client</Label>
+                                <StackPanel Orientation="Horizontal" Margin="20 0">
+                                    <Label>Par son nom</Label>
+                                    <TextBox Width="100" Height="20" x:Name="SearchClientName"/>
+                                    <Button Height="20" Padding="10 0" Margin="5 0" Click="SearchClientByName">Rechercher</Button>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20 0">
+                                    <Label>Par son identifiant</Label>
+                                    <TextBox Width="100" Height="20" x:Name="SearchClientID"/>
+                                    <Button Height="20" Padding="10 0" Margin="5 0" Click="SearchClientByID">Rechercher</Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <DataGrid x:Name="clientsDataGrid" Grid.Row="1" SelectedCellsChanged="SelectedClientChanged">
                     </DataGrid>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Grid Margin="5" Grid.Row="0">
+                            <TextBlock Visibility="Hidden">Commandes du client sélectionné</TextBlock>
+                            <TextBlock>Selectionnez un client pour voir ses commandes</TextBlock>
+                        </Grid>
+                        <DataGrid x:Name="clientDataGrid" Grid.Row="1"/>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Produits" VerticalAlignment="Top">
