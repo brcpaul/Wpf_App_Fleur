@@ -91,12 +91,11 @@ namespace Wpf_App_Fleur
             {
                 connection_utili.Open();
                 MySqlCommand command = connection_utili.CreateCommand();
-                command.CommandText = "select count(*) from client where id_client = @username and mdp = @password;";
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read() && reader.FieldCount >= 1)
+                command.CommandText = $"select count(*) from client where id_client = {username} and mdp = {password};";
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     int count = Convert.ToInt32(reader.GetValue(0));
-                    if (count > 0)
+                    if (count>0)
                     {
                         ClientWindow client_window = new ClientWindow(connection_utili);
                         Window.GetWindow(this).Content = client_window;
