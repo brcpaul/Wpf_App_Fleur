@@ -53,12 +53,12 @@ namespace Wpf_App_Fleur
                     etatCommande = "CAL";
                     break;
                 case "Commande livrée":
-                    etatCommande = "CAL";
+                    etatCommande = "CL";
                     break;
             }
 
             string commande_text = @"use fleur;
-                SELECT id_commande, MIN(co.id_client) as 'Id client', MIN(cl.prenom) as 'Prénom client', MIN(cl.nom) as 'Nom client',MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Comosition perso', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
+                SELECT id_commande, MIN(co.id_client) as 'Id client', MIN(cl.prenom) as 'Prénom client', MIN(cl.nom) as 'Nom client',MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Comosition perso', MIN(co.date_commande), MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
                 LEFT JOIN bouquet_perso bp ON co.id_bouquet=bp.id_bp
                 LEFT JOIN bouquet_standard bs ON co.id_bouquet=bs.id_bs
                 JOIN client cl ON cl.id_client=co.id_client
@@ -71,7 +71,7 @@ namespace Wpf_App_Fleur
             command = new MySqlCommand(commande_text, this.connexion);
             dataTable = new DataTable();
             dataTable.Load(command.ExecuteReader());
-            command.Dispose()
+            command.Dispose();
             commandesDataGrid.ItemsSource = new DataView(dataTable);
         }
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
