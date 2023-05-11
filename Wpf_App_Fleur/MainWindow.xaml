@@ -13,13 +13,13 @@
     <Grid>
         <!--<MediaElement Name="videoPlayer" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Margin="155,10,0,0"/>-->
         <Grid.Background>
-            <ImageBrush ImageSource="C:\Users\TRAVAIL\Desktop\BDDI\Wpf_App_Fleur\photo_fleur1.jpg" />
+            <ImageBrush ImageSource="photo_fleur1.jpg" />
         </Grid.Background>
         <Border
             Width="300"
             Height="350"
             Background="White"
-            CornerRadius="70 70 70 70">
+            CornerRadius="10">
             <StackPanel Margin="20">
                 <Label
                     Margin="90,15,90,15"
