@@ -11,15 +11,15 @@
     Background="White"
     ShowsNavigationUI="False"
     mc:Ignorable="d">
-    <Grid Background="#333333">
-        <!--
-        <TabControl>
+    <Grid>
+        <TabControl SelectionChanged="SelectionChanged" x:Name="tabControl">
             <TabItem Header="Accueil">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Clients">
                 <Grid Background="#FFE5E5E5">
-                    <ListBox x:Name="clientsListBox"/>
+                    <DataGrid x:Name="dataGrid">
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Produits" Height="22" Margin="-2,-2,-2,0" VerticalAlignment="Top">
@@ -51,8 +51,7 @@
                 <Button Content="Déconnection" />
             </TabItem>
         </TabControl>
-        -->
-        <StackPanel 
+        <!--<StackPanel 
             Background="#222222"
             Width="160"
             Orientation="Vertical"
@@ -70,9 +69,6 @@
                 <MenuItem Header="_Commandes" Click="ClientsClick"></MenuItem>
                 <MenuItem Header="_Déconnection" Click="ClientsClick" FontWeight="Bold"></MenuItem>
             </Menu>
-        </StackPanel>
-        <DataGrid x:Name="dataGrid" Margin="160,0,0,0">
-            
-        </DataGrid>
+        </StackPanel>-->
     </Grid> 
 </Page>

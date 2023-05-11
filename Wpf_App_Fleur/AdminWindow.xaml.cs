@@ -32,9 +32,9 @@ namespace Wpf_App_Fleur
             this.connexion = connexion; 
         }
 
-        public void ClientsClick(object sender, RoutedEventArgs e)
+        public void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MySqlCommand command = new MySqlCommand("SELECT id_client as 'Id Client',nom,prenom,tel,mail,adresse_factu,statut FROM client;",this.connexion);
+            MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;",this.connexion);
             DataTable dataTable = new DataTable();
             dataTable.Load(command.ExecuteReader());
             dataGrid.ItemsSource = new DataView(dataTable);
