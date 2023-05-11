@@ -61,21 +61,22 @@ namespace Wpf_App_Fleur
             MySqlConnection connection_admin = new MySqlConnection(connectionString_admin);
             MySqlConnection connection_utili = new MySqlConnection(connectionString_utili);
 
-            string exportPath = @"C:\Users\TRAVAIL\Desktop\BDDI\Fleur_BDDI\";
+            /*string exportPath = @"C:\Users\TRAVAIL\Desktop\BDDI\Fleur_BDDI\";
             string exportXml = "export_xml.xml";
             string exportJson = "export_json.js";
             if (!Directory.Exists(exportPath))
             {
                 Console.WriteLine("File path does not match!");
                 System.Environment.Exit(1);
-            }
+            }*/
 
             //Recuperation de l'identifiant et du mot de passe sasis
-            string username = txtUsername.Text;
-            string password = txtPassword.Password;
+            string username = "root";//txtUsername.Text;
+            string password = "root";//txtPassword.Password;
 
             if(username == "root" && password=="root")
             {
+                connection_admin.Open();
                 AdminWindow admin_window = new AdminWindow(connection_admin);
                 Window.GetWindow(this).Content = admin_window;
                 //Close();

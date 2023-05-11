@@ -31,66 +31,13 @@ namespace Wpf_App_Fleur
             InitializeComponent();
             this.connexion = connexion; 
         }
-        private void Navigation_List(object sender, SelectionChangedEventArgs e)
+
+        public void ClientsClick(object sender, RoutedEventArgs e)
         {
-            //TableControl
-            Button button = (Button)sender;
-            connexion.Open();
-            MySqlCommand command = connexion.CreateCommand();
-            //string buttonText = button.Content.ToString();
-            switch (button.Content.ToString()) //ou buttonText
-            {
-                case "Accueil":
-                    AdminWindow admin_window = new AdminWindow(connexion);
-                    Window.GetWindow(this).Content = admin_window;
-                    break;
-                case "Clients":
-                    command.CommandText = "Select * from clients";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        
-                    }
-                    break;
-                case "Produits":
-                    command.CommandText = "Select * from produits";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-
-                    }
-                    break;
-                case "Etat des Stocks":
-                    command.CommandText = "Select * from stocks";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-
-                    }
-                    break;
-                case "Commandes à livrer":
-                    command.CommandText = "";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-
-                    }
-                    break;
-                case "Commandes en livraison":
-                    command.CommandText = "";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-
-                    }
-                    break;
-                case "Commandes livrées":
-                    command.CommandText = "";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-
-                    }
-                    break;
-                default:
-                    break;
-            }
-            command.Dispose();
-            connexion.Close();
+            MySqlCommand command = new MySqlCommand("SELECT id_client as 'Id Client',nom,prenom,tel,mail,adresse_factu,statut FROM client;",this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            dataGrid.ItemsSource = new DataView(dataTable);
         }
     }
 }

@@ -63,17 +63,16 @@
                         <VirtualizingStackPanel Orientation="Vertical" />
                     </ItemsPanelTemplate>
                 </Menu.ItemsPanel>
-                <MenuItem Header="_Accueil" Click="Accueil_Click" FontWeight="Bold"></MenuItem>
-                <MenuItem Header="_Clients" Click="Clients_Click"></MenuItem>
-                <MenuItem Header="_Produits" Click="Clients_Click"></MenuItem>
-                <MenuItem Header="_Etat des stocks" Click="Clients_Click"></MenuItem>
-                <MenuItem Header="_Commandes" Click="Clients_Click"></MenuItem>
-                <MenuItem Header="_Déconnection" Margin="0 250 0 0" Click="Clients_Click" FontWeight="Bold"></MenuItem>
-            </Menu> 
+                <MenuItem Header="_Accueil" Click="ClientsClick" FontWeight="Bold"></MenuItem>
+                <MenuItem Header="_Clients" Click="ClientsClick"></MenuItem>
+                <MenuItem Header="_Produits" Click="ClientsClick"></MenuItem>
+                <MenuItem Header="_Etat des stocks" Click="ClientsClick"></MenuItem>
+                <MenuItem Header="_Commandes" Click="ClientsClick"></MenuItem>
+                <MenuItem Header="_Déconnection" Click="ClientsClick" FontWeight="Bold"></MenuItem>
+            </Menu>
         </StackPanel>
-        <StackPanel Orientation="Vertical">
-            <ContentControl x:Name="contentControl">
-            </ContentControl>
-        </StackPanel>
-    </Grid>
+        <DataGrid x:Name="dataGrid" Margin="160,0,0,0">
+            
+        </DataGrid>
+    </Grid> 
 </Page>
