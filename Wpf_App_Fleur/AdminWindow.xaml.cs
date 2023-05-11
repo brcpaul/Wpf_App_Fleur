@@ -31,13 +31,51 @@ namespace Wpf_App_Fleur
             InitializeComponent();
             this.connexion = connexion; 
         }
+        public void ShowCommandes(object sender=null, RoutedEventArgs e=null)
+        {
+            MySqlCommand command;
+            DataTable dataTable;
+            RadioButton ck = sender as RadioButton;
 
+            string etatCommande="VINV";
+            switch (ck.Content)
+            {
+                case "Commande standard à vérifier":
+                    etatCommande = "VINV";
+                    break;
+                case "Commande personnalisée à vérifier":
+                    etatCommande = "CPAV";
+                    break;
+                case "Commande complète":
+                    etatCommande = "CC";
+                    break;
+                case "Commande à livrer":
+                    etatCommande = "CAL";
+                    break;
+                case "Commande livrée":
+                    etatCommande = "CAL";
+                    break;
+            }
+
+            command = new MySqlCommand("SELECT * FROM commande WHERE etat='"+etatCommande+"';", this.connexion);
+            dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            commandesDataGrid.ItemsSource = new DataView(dataTable);
+        }
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;",this.connexion);
-            DataTable dataTable = new DataTable();
-            dataTable.Load(command.ExecuteReader());
-            dataGrid.ItemsSource = new DataView(dataTable);
+            DataTable dataTable;
+            MySqlCommand command;
+            switch (((TabItem)tabControl.SelectedItem).Header)
+            {
+                case "Clients":
+                    command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    clientsDataGrid.ItemsSource = new DataView(dataTable);
+                    break;
+            };
+
         }
     }
 }

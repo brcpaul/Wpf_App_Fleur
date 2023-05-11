@@ -18,13 +18,14 @@
             </TabItem>
             <TabItem Header="Clients">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="dataGrid">
+                    <DataGrid x:Name="clientsDataGrid">
                     </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Produits" Height="22" Margin="-2,-2,-2,0" VerticalAlignment="Top">
                 <Grid Background="#FFE5E5E5">
-                    <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
+                    <DataGrid x:Name="produitsDataGrid">
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Etat des Stocks">
@@ -32,19 +33,25 @@
                     <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Commandes à livrer">
+            <TabItem Header="Commandes">
                 <Grid Background="#FFE5E5E5">
-                    <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Commandes en livraison">
-                <Grid Background="#FFE5E5E5">
-                    <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Commandes livrées">
-                <Grid Background="#FFE5E5E5">
-                    <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Margin="0 5">
+                                <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande standard à vérifier</RadioButton>
+                                <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande personnalisée à vérifier</RadioButton>
+                            </StackPanel>
+                            <StackPanel Margin="0 5">
+                                <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande complète</RadioButton>
+                                <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande à livrer</RadioButton>
+                            </StackPanel>
+                            <StackPanel Margin="0 5">
+                                <RadioButton GroupName="ready" Margin="5 1" Checked="ShowCommandes">Commande livrée</RadioButton>
+                            </StackPanel>
+                        </StackPanel>
+                        <DataGrid Margin="5" x:Name="commandesDataGrid">
+                        </DataGrid>
+                    </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Déconnection">
@@ -70,5 +77,5 @@
                 <MenuItem Header="_Déconnection" Click="ClientsClick" FontWeight="Bold"></MenuItem>
             </Menu>
         </StackPanel>-->
-    </Grid> 
+    </Grid>
 </Page>
