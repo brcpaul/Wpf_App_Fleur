@@ -224,8 +224,12 @@ namespace Wpf_App_Fleur
 
                 }
             }
-            //ShowClients();
         }
+        /// <summary>
+        /// Permet de supprimer un client de la base de données
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SupprimerClient(object sender, RoutedEventArgs e)
         {
             string commandeText = "DELETE FROM client WHERE id_client=@clientId;";
@@ -244,6 +248,9 @@ namespace Wpf_App_Fleur
             }
             ShowClients();
         }
+        /// <summary>
+        ///  Récupère les clients et les affiche
+        /// </summary>
         public void ShowClients()
         {
             MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;", this.connexion);
@@ -251,16 +258,25 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             clientsDataGrid.ItemsSource = new DataView(dataTable);
         }
+        /// <summary>
+        /// Crée une chaine de caractères aléatoirement (utilisé pour générer des ID)
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public static string RandomString(int length)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
+        /// <summary>
+        /// Créer une commande
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void CreateCommande(object sender, RoutedEventArgs e)
         {
-            string id_commande = RandomString(20);
-            string id_client = commandeClientBox.Text;
+            string id_commande = RandomString(20); // Génére l'id de commande 
+            string id_client = commandeClientBox.Text; // Récupère les valeurs de tous les champs de la nouvelle commande
             string id_boutique = commandeBoutiqueBox.Text;
             string adresse_livraison = commandeAdresseBox.Text;
             bool est_standard = commandeTypeBox.SelectedIndex == 0;
@@ -271,6 +287,7 @@ namespace Wpf_App_Fleur
             }
             else
             {
+                // Si la commande est personalisée, on créé un nouveau bouquet perso et on l'ajoute à la table
                 id_bouquet = RandomString(20);
                 string description = commandeDescriptionBox.Text;
                 int prixMax = Convert.ToInt32(commandePrixMaxBox.Text);
@@ -283,6 +300,9 @@ namespace Wpf_App_Fleur
                     cmd.ExecuteNonQuery();
                 }
             }
+
+            // Enfin on insert la commande dans sa table
+
             string commandeText = "INSERT INTO commande(id_commande,id_client,id_boutique,est_standard,id_bouquet,adresse_livraison,date_commande) VALUES(@id_commande,@id_client,@id_boutique,@est_standard,@id_bouquet,@adresse_livraison,NOW())";
             using (var cmd = new MySqlCommand(commandeText, connexion))
             {
@@ -297,6 +317,11 @@ namespace Wpf_App_Fleur
 
         }
 
+        /// <summary>
+        /// Cette fonction est appelée à chaque fois que le Tab de notre TabControl est changé
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.currentPage == (string)((TabItem)tabControl?.SelectedItem)?.Header) return;
@@ -437,7 +462,6 @@ namespace Wpf_App_Fleur
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
                             string columnName = reader.GetName(i);
-                            //object columnValue = reader.GetValue(i);
                             string columnValue = reader.GetValue(i).ToString();
                             js_writer.WriteString(columnName, columnValue);
                         }
