@@ -190,51 +190,173 @@
                                     Content="Fleur exotique la moins vendue"
                                     FontSize="14" />
                             </StackPanel>
-                            <StackPanel Margin="80,0,0,0">
-                                <TextBox
-                                    x:Name="prix_moyenTxt"
-                                    Width="100"
-                                    Height="30"
-                                    Margin="0 2 0 2"
-                                    Background="GhostWhite"
-                                    FontSize="11" />
-                                <StackPanel>
+                            <StackPanel Margin="0,0,0,0">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <TextBox
-                                    x:Name="best_c_moisGrid"
-                                    Width="100"
-                                    Height="30"
-                                    Margin="0 18 0 2"
-                                    Background="GhostWhite"
-                                    FontSize="11" />
+                                        x:Name="prix_moyenTxt"
+                                        Width="100"
+                                        Height="30"
+                                        Margin="0,2,0,2"
+                                        HorizontalAlignment="Left"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                    <Label
+                                        Width="100"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        Content="euros"
+                                        FontSize="14" />
                                 </StackPanel>
-                                <TextBox
-                                    x:Name="best_c_anneeGrid"
-                                    Width="100"
-                                    Height="30"
-                                    Margin="0 18 0 2"
-                                    Background="GhostWhite"
-                                    FontSize="11" />
-                                <TextBox
-                                    x:Name="bs_sucessGrid"
-                                    Width="100"
-                                    Height="30"
-                                    Margin="0 18 0 2"
-                                    Background="GhostWhite"
-                                    FontSize="11" />
-                                <TextBox
-                                    x:Name="best_ca_shopGrid"
-                                    Width="100"
-                                    Height="30"
-                                    Margin="0 18 0 2"
-                                    Background="GhostWhite"
-                                    FontSize="11" />
-                                <TextBox
-                                    x:Name="less_sell_exoticGrid"
-                                    Width="100"
-                                    Height="30"
-                                    Margin="0 18 0 2"
-                                    Background="GhostWhite"
-                                    FontSize="11" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="ID :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="best_cid_moisGrid"
+                                        Width="150"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="total :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="best_ctot_moisGrid"
+                                        Width="90"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="ID :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="best_cid_anneeGrid"
+                                        Width="150"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="total :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="best_ctot_anneeGrid"
+                                        Width="90"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="nom :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="bs_nom_sucessGrid"
+                                        Width="150"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="vendu :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="bs_nb_vendu_sucessGrid"
+                                        Width="90"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="ID :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="best_idca_shopGrid"
+                                        Width="150"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="CA :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="best_ca_shopGrid"
+                                        Width="90"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="nom :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="less_sell_exoticnomGrid"
+                                        Width="150"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                    <Label
+                                        Width="80"
+                                        Height="28"
+                                        Margin="0,4,0,2"
+                                        HorizontalContentAlignment="Center"
+                                        Content="vendu :"
+                                        FontSize="14" />
+                                    <TextBox
+                                        x:Name="less_sell_exoticGrid"
+                                        Width="90"
+                                        Height="30"
+                                        Margin="0,18,0,2"
+                                        Background="GhostWhite"
+                                        FontSize="14" />
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

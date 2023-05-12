@@ -199,6 +199,7 @@ namespace Wpf_App_Fleur
             this.currentPage = (string)((TabItem)tabControl.SelectedItem).Header;
             DataTable dataTable;
             MySqlCommand command;
+            MySqlDataReader reader;
             switch (this.currentPage)
             {
                 case "Clients":
@@ -222,33 +223,56 @@ namespace Wpf_App_Fleur
                     break;
                 case "Statistiques":
                     command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    prix_moyenTxt.ItemsSource = new DataView(dataTable);
+                    reader = command.ExecuteReader();
+                    if (reader.Read() && reader.FieldCount > 1)
+                    {
+                        prix_moyenTxt.Text = reader.GetValue(0).ToString();
+                    }
+                    reader.Close();
                     command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Month(date_commande) = Month(now()) " +
                         "Group by id_client Order by somme_total_depense DESC limit 1; ", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    best_c_moisGrid.ItemsSource = new DataView(dataTable);
+                    reader = command.ExecuteReader();
+                    if (reader.Read() && reader.FieldCount > 1)
+                    {
+                        best_cid_moisGrid.Text = reader.GetValue(0).ToString();
+                        best_ctot_moisGrid.Text = reader.GetValue(1).ToString();
+                    }
+                    reader.Close();
                     command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Year(date_commande) = Year(now()) " +
                         "Group by id_client Order by somme_total_depense DESC limit 1;", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    best_c_anneeGrid.ItemsSource = new DataView(dataTable);
+                    reader = command.ExecuteReader();
+                    if (reader.Read() && reader.FieldCount > 1)
+                    {
+                        best_cid_anneeGrid.Text = reader.GetValue(0).ToString();
+                        best_ctot_anneeGrid.Text = reader.GetValue(1).ToString();
+                    }
+                    reader.Close();
                     command = new MySqlCommand("SELECT bs.nom, COUNT(*) AS total_commandes FROM bouquet_standard bs JOIN commande c ON bs.id_bs = c.id_bouquet " +
                         "WHERE c.est_standard = true GROUP BY bs.id_bs ORDER BY total_commandes DESC LIMIT 1; ", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    bs_sucessGrid.ItemsSource = new DataView(dataTable);
+                    reader = command.ExecuteReader();
+                    if (reader.Read() && reader.FieldCount > 1)
+                    {
+                        bs_nom_sucessGrid.Text = reader.GetValue(0).ToString();
+                        bs_nb_vendu_sucessGrid.Text = reader.GetValue(1).ToString();
+                    }
+                    reader.Close();
                     command = new MySqlCommand("SELECT c.id_boutique, SUM(c.prix_tot) AS chiffre_affaires FROM commande c GROUP BY c.id_boutique ORDER BY chiffre_affaires DESC LIMIT 1;", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    best_ca_shopGrid.ItemsSource = new DataView(dataTable);
+                    reader = command.ExecuteReader();
+                    if (reader.Read() && reader.FieldCount > 1)
+                    {
+                        best_idca_shopGrid.Text = reader.GetValue(0).ToString();
+                        best_ca_shopGrid.Text = reader.GetValue(1).ToString();
+                    }
+                    reader.Close();
                     command = new MySqlCommand("select nom, count(nom) as vente from produit natural join commande group by nom order by vente asc limit 1;", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    less_sell_exoticGrid.ItemsSource = new DataView(dataTable);
+                    reader = command.ExecuteReader();
+                    if (reader.Read() && reader.FieldCount > 1)
+                    {
+                        less_sell_exoticnomGrid.Text = reader.GetValue(0).ToString();
+                        less_sell_exoticGrid.Text = reader.GetValue(1).ToString();
+                    }
                     command.Dispose();
+                    reader.Close();
                     break;
                 default:
                     break;
