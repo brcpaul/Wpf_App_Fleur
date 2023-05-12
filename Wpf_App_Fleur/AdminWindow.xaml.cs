@@ -284,6 +284,7 @@ namespace Wpf_App_Fleur
                     ShowCommandes();
                     break;
                 case "Statistiques":
+                    //Calcul du prix moyen du bouquet acheté
                     command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
                     reader = command.ExecuteReader();
                     if (reader.Read() && reader.FieldCount > 0)
@@ -291,6 +292,7 @@ namespace Wpf_App_Fleur
                         prix_moyenTxt.Text = reader.GetValue(0).ToString();
                     }
                     reader.Close();
+                    //Quel est le meilleur client du mois
                     command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Month(date_commande) = Month(now()) " +
                         "Group by id_client Order by somme_total_depense DESC limit 1; ", this.connexion);
                     reader = command.ExecuteReader();
@@ -300,6 +302,7 @@ namespace Wpf_App_Fleur
                         best_ctot_moisGrid.Text = reader.GetValue(1).ToString();
                     }
                     reader.Close();
+                    //Quel est le meilleur client de l'année
                     command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Year(date_commande) = Year(now()) " +
                         "Group by id_client Order by somme_total_depense DESC limit 1;", this.connexion);
                     reader = command.ExecuteReader();
@@ -309,6 +312,7 @@ namespace Wpf_App_Fleur
                         best_ctot_anneeGrid.Text = reader.GetValue(1).ToString();
                     }
                     reader.Close();
+                    //Quel est le bouquet standard qui a eu le plus de succès ? 
                     command = new MySqlCommand("SELECT bs.nom, COUNT(*) AS total_commandes FROM bouquet_standard bs JOIN commande c ON bs.id_bs = c.id_bouquet " +
                         "WHERE c.est_standard = true GROUP BY bs.id_bs ORDER BY total_commandes DESC LIMIT 1; ", this.connexion);
                     reader = command.ExecuteReader();
@@ -318,6 +322,7 @@ namespace Wpf_App_Fleur
                         bs_nb_vendu_sucessGrid.Text = reader.GetValue(1).ToString();
                     }
                     reader.Close();
+                    //Quel est le magasin qui a généré le plus de chiffre d’affaires ?
                     command = new MySqlCommand("SELECT c.id_boutique, SUM(c.prix_tot) AS chiffre_affaires FROM commande c GROUP BY c.id_boutique ORDER BY chiffre_affaires DESC LIMIT 1;", this.connexion);
                     reader = command.ExecuteReader();
                     if (reader.Read() && reader.FieldCount > 1)
@@ -326,6 +331,7 @@ namespace Wpf_App_Fleur
                         best_ca_shopGrid.Text = reader.GetValue(1).ToString();
                     }
                     reader.Close();
+                    //Quelle est la fleur exotique la moins vendue ? 
                     command = new MySqlCommand("select nom, count(nom) as vente from produit natural join commande group by nom order by vente asc limit 1;", this.connexion);
                     reader = command.ExecuteReader();
                     if (reader.Read() && reader.FieldCount > 1)
