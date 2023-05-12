@@ -24,3 +24,8 @@ ORDER BY chiffre_affaires DESC
 LIMIT 10;
 
 select avg(prix) from bouquet_standard;
+
+SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
+                        INNER JOIN commande cmd ON c.id_client = cmd.id_client 
+                        WHERE cmd.date_commande >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+                        GROUP BY c.id_client HAVING COUNT(*) > 1;

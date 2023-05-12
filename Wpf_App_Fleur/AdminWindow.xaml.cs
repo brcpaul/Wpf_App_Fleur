@@ -267,5 +267,68 @@ namespace Wpf_App_Fleur
         {
 
         }
+        private void btn_clickExportJson(object sender, RoutedEventArgs e)
+        {
+            string name_file = "";
+            string mysql_query = @"SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
+                       LEFT JOIN commande cmd ON c.id_client = cmd.id_client
+                       WHERE cmd.date_commande IS NULL OR cmd.date_commande < DATE_SUB(NOW(), INTERVAL 6 MONTH);";
+            using (FileStream file = File.Create(name_file))
+            {
+                var options_js = new JsonWriterOptions { Indented = true };
+                using (Utf8JsonWriter js_writer = new Utf8JsonWriter(file, options_js))
+                {
+                    js_writer.WriteStartArray();
+                    MySqlCommand command = new MySqlCommand(mysql_query, connexion);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        js_writer.WriteStartObject();
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            string columnName = reader.GetName(i);
+                            //object columnValue = reader.GetValue(i);
+                            string columnValue = reader.GetValue(i).ToString();
+                            js_writer.WriteString(columnName, columnValue);
+                        }
+                        js_writer.WriteEndObject();
+                    }
+                    js_writer.WriteEndArray();
+                    command.Dispose();
+                    reader.Close();
+                }
+            }
+        }
+        private void btn_clickExportXml(object sender, RoutedEventArgs e)
+        {
+            string name_file = "";
+            string mysql_query = @"SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
+                        INNER JOIN commande cmd ON c.id_client = cmd.id_client 
+                        WHERE cmd.date_commande >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+                        GROUP BY c.id_client HAVING COUNT(*) > 1;";
+            string[] clients_keys = { "ID_Client", "Nom", "Prenom", "Telephone", "Email", "Adresse_de_Facturation", "Numero_de_Carte", "Statut" };
+            MySqlCommand command = new MySqlCommand(mysql_query, connexion);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            using (XmlWriter xml_writer = XmlWriter.Create(name_file))
+            {
+                xml_writer.WriteStartDocument();
+                xml_writer.WriteStartElement("Clients");
+                while (reader.Read())
+                {
+                    xml_writer.WriteStartElement("Client");
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        xml_writer.WriteElementString(clients_keys[i], reader.GetString(i));
+                    }
+                    xml_writer.WriteEndElement();
+                }
+                xml_writer.WriteEndElement();
+                xml_writer.WriteEndDocument();
+            }
+            command.Dispose();
+            reader.Close();
+        }
+
     }
 }

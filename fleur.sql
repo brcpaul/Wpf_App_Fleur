@@ -79,11 +79,11 @@ CREATE  TABLE IF NOT EXISTS commande (
     CONSTRAINT id_number_client FOREIGN KEY (id_client) REFERENCES client (id_client),
     CONSTRAINT id_number_boutique FOREIGN KEY (id_boutique) REFERENCES boutique (id_boutique),
 	PRIMARY KEY (id_commande));
-
+/*
 CREATE USER 'bozo'@'localhost' IDENTIFIED BY 'bozo';
 GRANT SELECT ON * TO 'bozo'@'localhost';
 FLUSH PRIVILEGES;
-
+*/
 DELIMITER //     #permet la création du déclencheur (ou trigger) avec plusieurs instructions
 CREATE TRIGGER verifier_statut_fidelite_client AFTER INSERT ON commande
 FOR EACH ROW
