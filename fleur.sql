@@ -93,7 +93,7 @@ BEGIN
         SELECT COUNT(*)
         FROM commande
         WHERE id_client = NEW.id_client
-        AND MONTH(date_commande) = MONTH(CURRENT_DATE())
+        AND date_commande >= DATEADD(day,31,GETDATE())
     );
 
     #Mise à jour du statut du client en fonction du nombre de bouquets achetés par mois
