@@ -336,6 +336,11 @@ namespace Wpf_App_Fleur
                     command.Dispose();
                     reader.Close();
                     break;
+                case "Déconnexion":
+                    MainWindow main = new MainWindow();
+                    main.Show();
+                    Window.GetWindow(this).Close();
+                    break;
                 default:
                     break;
             };
