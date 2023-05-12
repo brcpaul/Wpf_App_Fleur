@@ -92,7 +92,21 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             commandesDataGrid.ItemsSource = new DataView(dataTable);
         }
-
+        public void Search_ProductByName(object sender, RoutedEventArgs e)
+        {
+            MySqlCommand command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique WHERE p.id_produit LIKE '%" + Search_ProductName.Text + "%' and s.quantite < 3; ", this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            produitsrup_DataGrid.ItemsSource = new DataView(dataTable);
+        }
+        public void SearchProduitsBoutiqueByID(object sender, RoutedEventArgs e)
+        {
+            MySqlCommand command = new MySqlCommand("SELECT b.id_boutique, p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique " +
+                "WHERE b.id_boutique LIKE '%" + SearchProduitsID.Text + "%' AND s.quantite < 3;", this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            produitsrup_DataGrid.ItemsSource = new DataView(dataTable);
+        }
         public void SearchClientByName(object sender, RoutedEventArgs e)
         {
             MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client WHERE nom LIKE '%" + SearchClientName.Text + "%'", this.connexion);
@@ -192,6 +206,16 @@ namespace Wpf_App_Fleur
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
                     clientsDataGrid.ItemsSource = new DataView(dataTable);
+                    break;
+                case "Etat des Stocks":
+                    command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique  WHERE s.quantite < 3;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    produitsrup_DataGrid.ItemsSource = new DataView(dataTable);
+                    command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique;", this.connexion);
+                    dataTable = new DataTable();
+                    dataTable.Load(command.ExecuteReader());
+                    produitsDataGrid.ItemsSource = new DataView(dataTable);
                     break;
                 case "Commandes":
                     ShowCommandes();

@@ -12,63 +12,125 @@
     ShowsNavigationUI="False"
     mc:Ignorable="d">
     <Grid>
-        <TabControl SelectionChanged="SelectionChanged" x:Name="tabControl">
+        <TabControl x:Name="tabControl" SelectionChanged="SelectionChanged">
             <TabItem Header="Accueil">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5" />
             </TabItem>
             <TabItem Header="Clients">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="45"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="45" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="0.5*" />
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Margin="10">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                                 <Label>Rechercher un client</Label>
-                                <StackPanel Orientation="Horizontal" Margin="20 0">
+                                <StackPanel Margin="20,0" Orientation="Horizontal">
                                     <Label>Par son nom</Label>
-                                    <TextBox Width="100" Height="20" x:Name="SearchClientName"/>
-                                    <Button Height="20" Padding="10 0" Margin="5 0" Click="SearchClientByName">Rechercher</Button>
+                                    <TextBox
+                                        x:Name="SearchClientName"
+                                        Width="100"
+                                        Height="20" />
+                                    <Button
+                                        Height="20"
+                                        Margin="5,0"
+                                        Padding="10,0"
+                                        Click="SearchClientByName">
+                                        Rechercher
+                                    </Button>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="20 0">
+                                <StackPanel Margin="20,0" Orientation="Horizontal">
                                     <Label>Par son identifiant</Label>
-                                    <TextBox Width="100" Height="20" x:Name="SearchClientID"/>
-                                    <Button Height="20" Padding="10 0" Margin="5 0" Click="SearchClientByID">Rechercher</Button>
+                                    <TextBox
+                                        x:Name="SearchClientID"
+                                        Width="100"
+                                        Height="20" />
+                                    <Button
+                                        Height="20"
+                                        Margin="5,0"
+                                        Padding="10,0"
+                                        Click="SearchClientByID">
+                                        Rechercher
+                                    </Button>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
-                    <DataGrid x:Name="clientsDataGrid" Grid.Row="1" SelectedCellsChanged="SelectedClientChanged">
-                    </DataGrid>
+                    <DataGrid
+                        x:Name="clientsDataGrid"
+                        Grid.Row="1"
+                        SelectedCellsChanged="SelectedClientChanged" />
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="28" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        <Grid Margin="5" Grid.Row="0">
+                        <Grid Grid.Row="0" Margin="5">
                             <TextBlock Visibility="Hidden">Commandes du client sélectionné</TextBlock>
                             <TextBlock>Selectionnez un client pour voir ses commandes</TextBlock>
                         </Grid>
-                        <DataGrid x:Name="clientDataGrid" Grid.Row="1"/>
+                        <DataGrid x:Name="clientDataGrid" Grid.Row="1" />
                     </Grid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Produits" VerticalAlignment="Top">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="produitsDataGrid">
-                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Etat des Stocks">
                 <Grid Background="#FFE5E5E5">
-                    <DataGridCell Margin="20,50,20,20" Background="DarkSlateGray" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="0.75*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="10">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Produit en rupture (inf à 3)</Label>
+                                <StackPanel Margin="20,0" Orientation="Horizontal">
+                                    <Label>Par son ID</Label>
+                                    <TextBox
+                                        x:Name="Search_ProductName"
+                                        Width="100"
+                                        Height="20" />
+                                    <Button
+                                        Height="20"
+                                        Margin="5,0"
+                                        Padding="10,0"
+                                        Click="Search_ProductByName">
+                                        Rechercher
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel Margin="0,0" Orientation="Horizontal">
+                                    <Label>Filtrer par boutique</Label>
+                                    <TextBox
+                                        x:Name="SearchProduitsID"
+                                        Width="100"
+                                        Height="20" />
+                                    <Button
+                                        Height="20"
+                                        Margin="5,0"
+                                        Padding="10,0"
+                                        Click="SearchProduitsBoutiqueByID">
+                                        Rechercher
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <DataGrid x:Name="produitsrup_DataGrid" Grid.Row="1" />
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Margin="5">
+                            <TextBlock>Listes des produits</TextBlock>
+                        </Grid>
+                        <DataGrid x:Name="produitsDataGrid" Grid.Row="1" />
+                    </Grid>
                 </Grid>
             </TabItem>
-            <TabItem
-                VerticalAlignment="Top"
-                Header="Statistiques">
+            <TabItem VerticalAlignment="Top" Header="Statistiques">
                 <Grid Background="#FFE5E5E5">
                     <StackPanel Orientation="Vertical">
                         <Label
@@ -163,45 +225,86 @@
                         <RowDefinition Height="80" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0">
-                        <StackPanel Orientation="Vertical" Margin="5 10">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <StackPanel Margin="5,10" Orientation="Vertical">
                             <TextBlock>Filtrer par type de commande</TextBlock>
                             <StackPanel Orientation="Horizontal">
-                                <StackPanel Margin="0 5">
-                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ChangedCommandeEtat" IsChecked="True">Commande standard à vérifier</RadioButton>
-                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ChangedCommandeEtat">Commande personnalisée à vérifier</RadioButton>
+                                <StackPanel Margin="0,5">
+                                    <RadioButton
+                                        Margin="5,1"
+                                        Checked="ChangedCommandeEtat"
+                                        GroupName="ready"
+                                        IsChecked="True">
+                                        Commande standard à vérifier
+                                    </RadioButton>
+                                    <RadioButton
+                                        Margin="5,1"
+                                        Checked="ChangedCommandeEtat"
+                                        GroupName="ready">
+                                        Commande personnalisée à vérifier
+                                    </RadioButton>
                                 </StackPanel>
-                                <StackPanel Margin="0 5">
-                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ChangedCommandeEtat">Commande complète</RadioButton>
-                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ChangedCommandeEtat">Commande à livrer</RadioButton>
+                                <StackPanel Margin="0,5">
+                                    <RadioButton
+                                        Margin="5,1"
+                                        Checked="ChangedCommandeEtat"
+                                        GroupName="ready">
+                                        Commande complète
+                                    </RadioButton>
+                                    <RadioButton
+                                        Margin="5,1"
+                                        Checked="ChangedCommandeEtat"
+                                        GroupName="ready">
+                                        Commande à livrer
+                                    </RadioButton>
                                 </StackPanel>
-                                <StackPanel Margin="0 5">
-                                    <RadioButton GroupName="ready" Margin="5 1" Checked="ChangedCommandeEtat">Commande livrée</RadioButton>
+                                <StackPanel Margin="0,5">
+                                    <RadioButton
+                                        Margin="5,1"
+                                        Checked="ChangedCommandeEtat"
+                                        GroupName="ready">
+                                        Commande livrée
+                                    </RadioButton>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Margin="10 5">
+                        <StackPanel Margin="10,5">
                             <TextBlock>Filtrer par Boutique</TextBlock>
-                            <TextBox Margin="0 10" Height="24" TextChanged="ShowCommandes" x:Name="boutiqueFilterBox"/>
+                            <TextBox
+                                x:Name="boutiqueFilterBox"
+                                Height="24"
+                                Margin="0,10"
+                                TextChanged="ShowCommandes" />
                         </StackPanel>
-                        <StackPanel Margin="10 5">
+                        <StackPanel Margin="10,5">
                             <TextBlock>Filtrer par date</TextBlock>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Label>Début</Label>
-                                <DatePicker Margin="0 0" FontSize="9" x:Name="dateStartFilterBox" SelectedDateChanged="ShowCommandes"/>
+                                <DatePicker
+                                    x:Name="dateStartFilterBox"
+                                    Margin="0,0"
+                                    FontSize="9"
+                                    SelectedDateChanged="ShowCommandes" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Label>Fin</Label>
-                                <DatePicker Margin="0 0" FontSize="9" x:Name="dateEndFilterBox" SelectedDateChanged="ShowCommandes"/>
+                                <DatePicker
+                                    x:Name="dateEndFilterBox"
+                                    Margin="0,0"
+                                    FontSize="9"
+                                    SelectedDateChanged="ShowCommandes" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                     <Grid Grid.Row="1">
-                        <DataGrid x:Name="commandesDataGrid"/>
+                        <DataGrid x:Name="commandesDataGrid" />
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="+ Commande" Height="20" VerticalAlignment="Top">
+            <TabItem
+                Height="20"
+                VerticalAlignment="Top"
+                Header="+ Commande">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70" />
@@ -209,37 +312,76 @@
                         <RowDefinition Height="40" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Height="20" Margin="10" Grid.Row="0">
-                        <TextBox Text="ID client" x:Name="commandeClientBox" Margin="5 0" Width="100"/>
-                        <TextBox Text="ID Boutique" x:Name="commandeBoutiqueBox" Margin="5 0" Width="100"/>
-                        <TextBox Text="Adresse de livraison" x:Name="commandeAdresseBox" Margin="5 0" Width="200"/>
-                        <ComboBox Margin="5 0" x:Name="commandeTypeBox" Width="100">
+                    <StackPanel
+                        Grid.Row="0"
+                        Height="20"
+                        Margin="10"
+                        Orientation="Horizontal">
+                        <TextBox
+                            x:Name="commandeClientBox"
+                            Width="100"
+                            Margin="5,0"
+                            Text="ID client" />
+                        <TextBox
+                            x:Name="commandeBoutiqueBox"
+                            Width="100"
+                            Margin="5,0"
+                            Text="ID Boutique" />
+                        <TextBox
+                            x:Name="commandeAdresseBox"
+                            Width="200"
+                            Margin="5,0"
+                            Text="Adresse de livraison" />
+                        <ComboBox
+                            x:Name="commandeTypeBox"
+                            Width="100"
+                            Margin="5,0">
                             <ComboBoxItem IsSelected="True">Standard</ComboBoxItem>
                             <ComboBoxItem>Personalisé</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                     <Grid Grid.Row="1">
-                        <TextBlock Margin="20 0">Pour les commandes personnalisées : </TextBlock>
-                        <StackPanel Orientation="Horizontal" Height="50" Margin="10">
-                            <TextBox Text="Description de la commande" x:Name="commandeDescriptionBox" Margin="5 0" AcceptsReturn="True" MinLines="3" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Width="300"/>
-                            <TextBox Text="Montant max de la commande" x:Name="commandePrixMaxBox" Margin="5 0" Height="20"/>
+                        <TextBlock Margin="20,0">Pour les commandes personnalisées :</TextBlock>
+                        <StackPanel
+                            Height="50"
+                            Margin="10"
+                            Orientation="Horizontal">
+                            <TextBox
+                                x:Name="commandeDescriptionBox"
+                                Width="300"
+                                Margin="5,0"
+                                AcceptsReturn="True"
+                                MinLines="3"
+                                Text="Description de la commande"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Visible" />
+                            <TextBox
+                                x:Name="commandePrixMaxBox"
+                                Height="20"
+                                Margin="5,0"
+                                Text="Montant max de la commande" />
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="2">
-                        <StackPanel Orientation="Horizontal" Margin="10">
-                            <TextBlock Margin="20 0">Pour les commandes standards :</TextBlock>
-                            <TextBox Height="20" x:Name="commandeBouquetStandardBox">ID du bouquet standard</TextBox>
+                        <StackPanel Margin="10" Orientation="Horizontal">
+                            <TextBlock Margin="20,0">Pour les commandes standards :</TextBlock>
+                            <TextBox x:Name="commandeBouquetStandardBox" Height="20">ID du bouquet standard</TextBox>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="3">
-                        <Button Width="100" Height="30" FontSize="14" Click="CreateCommande">Valider</Button>
-                    </Grid> 
+                        <Button
+                            Width="100"
+                            Height="30"
+                            Click="CreateCommande"
+                            FontSize="14">
+                            Valider
+                        </Button>
+                    </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Déconnexion">
-            </TabItem>
+            <TabItem Header="Déconnexion" />
         </TabControl>
-        <!--<StackPanel 
+        <!--<StackPanel
             Background="#222222"
             Width="160"
             Orientation="Vertical"
