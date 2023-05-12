@@ -28,6 +28,7 @@ namespace Wpf_App_Fleur
         private MySqlConnection connexion;
         private string currentPage;
         private string commandeEtatFilter;
+        private static Random random = new Random();
         public AdminWindow(MySqlConnection connexion)
         {
             InitializeComponent();
@@ -75,19 +76,18 @@ namespace Wpf_App_Fleur
                 JOIN boutique bo ON co.id_boutique=bo.id_boutique
                 LEFT JOIN composition_bouquet cb ON co.est_standard=false and cb.id_bp=co.id_bouquet
                 LEFT JOIN produit pr ON co.est_standard=false and cb.id_produit=pr.id_produit
-                WHERE etat='" + commandeEtatFilter + @"' AND bo.adresse LIKE @boutique AND co.date_commande>=@dateCommandeStart
+                WHERE etat='" + commandeEtatFilter + @"' AND bo.adresse LIKE @boutique AND co.date_commande>=@dateCommandeStart AND co.date_commande <= @dateCommandeEnd
                 GROUP BY id_commande";
 
             command = new MySqlCommand(commande_text, this.connexion);
             command.Parameters.AddWithValue("@boutique", "%" + boutiqueFilterBox.Text + "%");
-            if (dateStartFilterBox.SelectedDate.HasValue)
-            {
-                command.Parameters.AddWithValue("@dateCommandeStart",dateStartFilterBox.SelectedDate.Value);
-            }
-            else
-            {
-                command.Parameters.AddWithValue("@dateCommandeStart",new DateTime(0));
-            }
+            if (dateStartFilterBox.SelectedDate.HasValue) command.Parameters.AddWithValue("@dateCommandeStart",dateStartFilterBox.SelectedDate.Value);
+            else command.Parameters.AddWithValue("@dateCommandeStart",new DateTime(0));
+
+            if (dateEndFilterBox.SelectedDate.HasValue) command.Parameters.AddWithValue("@dateCommandeEnd", dateEndFilterBox.SelectedDate.Value);
+            else command.Parameters.AddWithValue("@dateCommandeEnd", DateTime.Today);
+
+
             dataTable = new DataTable();
             dataTable.Load(command.ExecuteReader());
             commandesDataGrid.ItemsSource = new DataView(dataTable);
@@ -135,9 +135,53 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             clientDataGrid.ItemsSource = new DataView(dataTable);
         }
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        public void CreateCommande(object sender, RoutedEventArgs e)
+        {
+            string id_commande = RandomString(20);
+            string id_client = commandeClientBox.Text;
+            string id_boutique = commandeBoutiqueBox.Text;
+            string adresse_livraison = commandeAdresseBox.Text;
+            bool est_standard = commandeTypeBox.SelectedIndex==0;
+            string id_bouquet;
+            if (est_standard)
+            {
+                id_bouquet = commandeBouquetStandardBox.Text;
+            } else
+            {
+                id_bouquet = RandomString(20);
+                string description = commandeDescriptionBox.Text;
+                int prixMax = Convert.ToInt32(commandePrixMaxBox.Text);
+                string commandeBp = "INSERT INTO bouquet_perso(id_bp,description_bp,prix_max) VALUES(@id_bp, @description_bp,@prix_max)";
+                using (var cmd = new MySqlCommand(commandeBp, connexion))
+                {
+                    cmd.Parameters.AddWithValue("@id_bp", id_bouquet);
+                    cmd.Parameters.AddWithValue("@description_bp", description);
+                    cmd.Parameters.AddWithValue("@prix_max", prixMax);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            string commandeText = "INSERT INTO commande(id_commande,id_client,id_boutique,est_standard,id_bouquet,adresse_livraison,date_commande) VALUES(@id_commande,@id_client,@id_boutique,@est_standard,@id_bouquet,@adresse_livraison,NOW())";
+            using (var cmd = new MySqlCommand(commandeText, connexion))
+            {
+                cmd.Parameters.AddWithValue("@id_commande", id_commande);
+                cmd.Parameters.AddWithValue("@id_client", id_client);
+                cmd.Parameters.AddWithValue("@id_boutique", id_boutique);
+                cmd.Parameters.AddWithValue("@est_standard", est_standard);
+                cmd.Parameters.AddWithValue("@id_bouquet", id_bouquet);
+                cmd.Parameters.AddWithValue("@adresse_livraison", adresse_livraison);
+                cmd.ExecuteNonQuery();
+            }
+
+        }
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.currentPage == (string)((TabItem)tabControl.SelectedItem).Header) return;
+            if (this.currentPage == (string)((TabItem)tabControl?.SelectedItem)?.Header) return;
             this.currentPage = (string)((TabItem)tabControl.SelectedItem).Header;
             DataTable dataTable;
             MySqlCommand command;

@@ -74,7 +74,7 @@ CREATE  TABLE IF NOT EXISTS commande (
     adresse_livraison VARCHAR(100),			#Delivery adress of the order
     date_livraison date,					#Date of delivery of the order
     date_commande date, 					#Date of the order
-    prix_tot float,							#Maximum price for flowers and accessory command (maybe INT, not sure at 100%)
+    prix_tot float,							#Final price of the command
     etat VARCHAR(40), 						#State of the order
     CONSTRAINT id_number_client FOREIGN KEY (id_client) REFERENCES client (id_client),
     CONSTRAINT id_number_boutique FOREIGN KEY (id_boutique) REFERENCES boutique (id_boutique),
@@ -84,11 +84,11 @@ CREATE USER 'bozo'@'localhost' IDENTIFIED BY 'bozo';
 GRANT SELECT ON * TO 'bozo'@'localhost';
 FLUSH PRIVILEGES;
 
-DELIMITER //     #permet la création du déclencheur (ou trigger) avec plusieurs instructions
+DELIMITER //     #permet la crÃ©ation du dÃ©clencheur (ou trigger) avec plusieurs instructions
 CREATE TRIGGER verifier_statut_fidelite_client AFTER INSERT ON commande
 FOR EACH ROW
 BEGIN
-    #Calcul du nombre total de bouquets achetés par mois
+    #Calcul du nombre total de bouquets achetÃ©s par mois
     SET @total_bouquets_mois = (
         SELECT COUNT(*)
         FROM commande
@@ -96,17 +96,17 @@ BEGIN
         AND MONTH(date_commande) = MONTH(CURRENT_DATE())
     );
 
-    #Mise à jour du statut du client en fonction du nombre de bouquets achetés par mois
-    #Fidélité OR si le client achète plus de 5 bouquets par mois, alors une réduction de 15% est offerte sur chaque bouquet 
+    #Mise Ã  jour du statut du client en fonction du nombre de bouquets achetÃ©s par mois
+    #FidÃ©litÃ© OR si le client achÃ¨te plus de 5 bouquets par mois, alors une rÃ©duction de 15% est offerte sur chaque bouquet 
     IF @total_bouquets_mois > 5 THEN
         UPDATE client
         SET statut = 'OR'
         WHERE id_client = NEW.id_client;
-    #Fidélité Bronze si le client achète en moyenne un bouquet par mois alors une réduction de 5% est offerte 
+    #FidÃ©litÃ© Bronze si le client achÃ¨te en moyenne un bouquet par mois alors une rÃ©duction de 5% est offerte 
     ELSEIF @total_bouquets_mois >= 1 THEN
         UPDATE client
         SET statut = 'BRONZE'
         WHERE id_client = NEW.id_client;
     END IF;
 END //
-DELIMITER ;     #on rétablit le délimiteur à sa valeur par défaut ';'
+DELIMITER ;     #on rÃ©tablit le dÃ©limiteur Ã  sa valeur par dÃ©faut ';'

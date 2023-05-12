@@ -201,8 +201,42 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Déconnection">
-                <Button Content="Déconnection" />
+            <TabItem Header="+ Commande" Height="20" VerticalAlignment="Top">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Height="20" Margin="10" Grid.Row="0">
+                        <TextBox Text="ID client" x:Name="commandeClientBox" Margin="5 0" Width="100"/>
+                        <TextBox Text="ID Boutique" x:Name="commandeBoutiqueBox" Margin="5 0" Width="100"/>
+                        <TextBox Text="Adresse de livraison" x:Name="commandeAdresseBox" Margin="5 0" Width="200"/>
+                        <ComboBox Margin="5 0" x:Name="commandeTypeBox" Width="100">
+                            <ComboBoxItem IsSelected="True">Standard</ComboBoxItem>
+                            <ComboBoxItem>Personalisé</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <TextBlock Margin="20 0">Pour les commandes personnalisées : </TextBlock>
+                        <StackPanel Orientation="Horizontal" Height="50" Margin="10">
+                            <TextBox Text="Description de la commande" x:Name="commandeDescriptionBox" Margin="5 0" AcceptsReturn="True" MinLines="3" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Width="300"/>
+                            <TextBox Text="Montant max de la commande" x:Name="commandePrixMaxBox" Margin="5 0" Height="20"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <TextBlock Margin="20 0">Pour les commandes standards :</TextBlock>
+                            <TextBox Height="20" x:Name="commandeBouquetStandardBox">ID du bouquet standard</TextBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Button Width="100" Height="30" FontSize="14" Click="CreateCommande">Valider</Button>
+                    </Grid> 
+                </Grid>
+            </TabItem>
+            <TabItem Header="Déconnexion">
             </TabItem>
         </TabControl>
         <!--<StackPanel 
