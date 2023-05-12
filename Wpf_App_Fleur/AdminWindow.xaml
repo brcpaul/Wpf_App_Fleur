@@ -80,9 +80,8 @@
                     <DataGrid
                         x:Name="clientsDataGrid"
                         Grid.Row="1"
-                        SelectedCellsChanged="SelectedClientChanged" 
                         CellEditEnding="ClientEditEnding"
-                        />
+                        SelectedCellsChanged="SelectedClientChanged" />
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="28" />
@@ -91,7 +90,13 @@
                         <Grid Grid.Row="0" Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>Selectionnez un client pour voir ses commandes</TextBlock>
-                                <Button x:Name="SupprimerClientButton" Visibility="Hidden" Click="SupprimerClient" Margin="20 0">Supprimer le client</Button>
+                                <Button
+                                    x:Name="SupprimerClientButton"
+                                    Margin="20,0"
+                                    Click="SupprimerClient"
+                                    Visibility="Hidden">
+                                    Supprimer le client
+                                </Button>
                             </StackPanel>
                         </Grid>
                         <DataGrid x:Name="clientDataGrid" Grid.Row="1" />
@@ -108,7 +113,7 @@
                     <Grid Grid.Row="0" Margin="10">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <Label>Produit en rupture (inf à 3)</Label>
+                                <Label>Produit en rupture (inf à 10)</Label>
                                 <StackPanel Margin="20,0" Orientation="Horizontal">
                                     <Label>Par son ID</Label>
                                     <TextBox
