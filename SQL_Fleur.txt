@@ -1,0 +1,25 @@
+CREATE TABLE client (id_client varchar(40) NOT NULL, nom varchar(40), prenom varchar(40), tel varchar(40), mail varchar(40), mdp varchar(40), adresse_factu varchar(100), num_carte varchar(40), statut varchar(40));  
+CREATE TABLE commande (id_commande varchar(40) NOT NULL, est_standard bool, adresse_livraison varchar(100), date_livraison datetime, date_commande datetime, prix_tot float, etat varchar(40), id_client varchar(40), id_bp varchar(40), id_bs varchar(40));  
+CREATE TABLE boutique (id_boutique varchar(40) NOT NULL, adresse varchar(100));  
+CREATE TABLE bouquet_perso (id_bp varchar(40) NOT NULL, description_bp varchar(100), prix_max float, id_commande varchar(40));  
+CREATE TABLE bouquet_standard (id_bs varchar(40) NOT NULL, composition varchar(100), prix float, categorie varchar(40), nom_s varchar(40));  
+CREATE TABLE produit (id_produit varchar(40) NOT NULL, disponibilite varchar(40), nom_p varchar(40), prix_p float);  
+CREATE TABLE composition_bouquet (id_bp varchar(40) NOT NULL, id_produit varchar(40) NOT NULL, quantite_cb int);  
+CREATE TABLE stock (id_boutique varchar(40) NOT NULL, id_produit varchar(40) NOT NULL, quantite int);  
+
+ALTER TABLE client ADD CONSTRAINT PK_client PRIMARY KEY (id_client);  
+ALTER TABLE commande ADD CONSTRAINT PK_commande PRIMARY KEY (id_commande);  
+ALTER TABLE boutique ADD CONSTRAINT PK_boutique PRIMARY KEY (id_boutique);  
+ALTER TABLE bouquet_perso ADD CONSTRAINT PK_bouquet_perso PRIMARY KEY (id_bp);  
+ALTER TABLE bouquet_standard ADD CONSTRAINT PK_bouquet_standard PRIMARY KEY (id_bs);  
+ALTER TABLE produit ADD CONSTRAINT PK_produit PRIMARY KEY (id_produit);  
+ALTER TABLE composition_bouquet ADD CONSTRAINT PK_composition_bouquet PRIMARY KEY (id_bp, id_produit);  
+ALTER TABLE stock ADD CONSTRAINT PK_stock PRIMARY KEY (id_boutique, id_produit);  
+ALTER TABLE commande ADD CONSTRAINT FK_commande_id_client FOREIGN KEY (id_client) REFERENCES client (id_client);  
+ALTER TABLE commande ADD CONSTRAINT FK_commande_id_bp FOREIGN KEY (id_bp) REFERENCES bouquet_perso (id_bp);  
+ALTER TABLE commande ADD CONSTRAINT FK_commande_id_bs FOREIGN KEY (id_bs) REFERENCES bouquet_standard (id_bs);  
+ALTER TABLE bouquet_perso ADD CONSTRAINT FK_bouquet_perso_id_commande FOREIGN KEY (id_commande) REFERENCES commande (id_commande);  
+ALTER TABLE composition_bouquet ADD CONSTRAINT FK_composition_bouquet_id_bp FOREIGN KEY (id_bp) REFERENCES bouquet_perso (id_bp);  
+ALTER TABLE composition_bouquet ADD CONSTRAINT FK_composition_bouquet_id_produit FOREIGN KEY (id_produit) REFERENCES produit (id_produit);  
+ALTER TABLE stock ADD CONSTRAINT FK_stock_id_boutique FOREIGN KEY (id_boutique) REFERENCES boutique (id_boutique);  
+ALTER TABLE stock ADD CONSTRAINT FK_stock_id_produit FOREIGN KEY (id_produit) REFERENCES produit (id_produit); 
