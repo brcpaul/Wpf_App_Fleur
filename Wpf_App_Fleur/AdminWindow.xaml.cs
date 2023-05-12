@@ -235,15 +235,12 @@ namespace Wpf_App_Fleur
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
                     best_c_anneeGrid.ItemsSource = new DataView(dataTable);
-                    command = new MySqlCommand("SELECT bs.nom, COUNT(c.id_bs) as nombre_commandes FROM bouquet_standard bs " +
-                        "JOIN commande c ON bs.id_bs = c.id_bs " +
-                        "GROUP BY bs.nom ORDER BY nombre_commandes DESC LIMIT 1;", this.connexion);
+                    command = new MySqlCommand("SELECT bs.nom, COUNT(*) AS total_commandes FROM bouquet_standard bs JOIN commande c ON bs.id_bs = c.id_bouquet " +
+                        "WHERE c.est_standard = true GROUP BY bs.id_bs ORDER BY total_commandes DESC LIMIT 1; ", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
                     bs_sucessGrid.ItemsSource = new DataView(dataTable);
-                    command = new MySqlCommand("SELECT b.id_boutique AS magasin, SUM(c.prix_tot) AS chiffre_affaires FROM commande c " +
-                        "INNER JOIN boutique b ON id_boutique = b.id_boutique " +
-                        "GROUP BY b.id_boutique ORDER BY chiffre_affaires DESC; ", this.connexion);
+                    command = new MySqlCommand("SELECT c.id_boutique, SUM(c.prix_tot) AS chiffre_affaires FROM commande c GROUP BY c.id_boutique ORDER BY chiffre_affaires DESC LIMIT 1;", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
                     best_ca_shopGrid.ItemsSource = new DataView(dataTable);
