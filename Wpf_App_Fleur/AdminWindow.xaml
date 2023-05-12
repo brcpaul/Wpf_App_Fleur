@@ -191,47 +191,50 @@
                                     FontSize="14" />
                             </StackPanel>
                             <StackPanel Margin="80,0,0,0">
-                                <DataGrid
+                                <TextBox
                                     x:Name="prix_moyenTxt"
                                     Width="100"
-                                    Height="50"
-                                    Margin="0"
-                                    Background="DarkSlateGray" />
-                                <DataGrid
+                                    Height="30"
+                                    Margin="0 2 0 2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <StackPanel>
+                                    <TextBox
                                     x:Name="best_c_moisGrid"
                                     Width="100"
-                                    Height="50"
-                                    Margin="0"
-                                    Background="DarkSlateGray"
-                                    FontSize="7" />
-                                <DataGrid
+                                    Height="30"
+                                    Margin="0 18 0 2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                </StackPanel>
+                                <TextBox
                                     x:Name="best_c_anneeGrid"
                                     Width="100"
-                                    Height="50"
-                                    Margin="0"
-                                    Background="DarkSlateGray"
-                                    FontSize="7" />
-                                <DataGrid
+                                    Height="30"
+                                    Margin="0 18 0 2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
                                     x:Name="bs_sucessGrid"
                                     Width="100"
-                                    Height="50"
-                                    Margin="0"
-                                    Background="DarkSlateGray"
-                                    FontSize="7" />
-                                <DataGrid
+                                    Height="30"
+                                    Margin="0 18 0 2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
                                     x:Name="best_ca_shopGrid"
                                     Width="100"
-                                    Height="50"
-                                    Margin="0"
-                                    Background="DarkSlateGray"
-                                    FontSize="7" />
-                                <DataGrid
+                                    Height="30"
+                                    Margin="0 18 0 2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
+                                <TextBox
                                     x:Name="less_sell_exoticGrid"
                                     Width="100"
-                                    Height="50"
-                                    Margin="0"
-                                    Background="DarkSlateGray"
-                                    FontSize="7" />
+                                    Height="30"
+                                    Margin="0 18 0 2"
+                                    Background="GhostWhite"
+                                    FontSize="11" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
