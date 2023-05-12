@@ -224,7 +224,7 @@ namespace Wpf_App_Fleur
                 case "Statistiques":
                     command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
                     reader = command.ExecuteReader();
-                    if (reader.Read() && reader.FieldCount > 1)
+                    if (reader.Read() && reader.FieldCount > 0)
                     {
                         prix_moyenTxt.Text = reader.GetValue(0).ToString();
                     }

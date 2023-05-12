@@ -192,7 +192,7 @@
                             </StackPanel>
                             <StackPanel Margin="0,0,0,0">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="prix_moyenTxt"
                                         Width="100"
                                         Height="30"
@@ -215,9 +215,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="ID :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="best_cid_moisGrid"
-                                        Width="150"
+                                        Width="170"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -229,9 +229,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="total :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="best_ctot_moisGrid"
-                                        Width="90"
+                                        Width="70"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -245,9 +245,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="ID :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="best_cid_anneeGrid"
-                                        Width="150"
+                                        Width="170"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -259,9 +259,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="total :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="best_ctot_anneeGrid"
-                                        Width="90"
+                                        Width="70"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -275,9 +275,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="nom :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="bs_nom_sucessGrid"
-                                        Width="150"
+                                        Width="170"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -289,9 +289,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="vendu :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="bs_nb_vendu_sucessGrid"
-                                        Width="90"
+                                        Width="70"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -305,9 +305,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="ID :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="best_idca_shopGrid"
-                                        Width="150"
+                                        Width="170"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -319,9 +319,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="CA :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="best_ca_shopGrid"
-                                        Width="90"
+                                        Width="70"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -335,9 +335,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="nom :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="less_sell_exoticnomGrid"
-                                        Width="150"
+                                        Width="170"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
@@ -349,9 +349,9 @@
                                         HorizontalContentAlignment="Center"
                                         Content="vendu :"
                                         FontSize="14" />
-                                    <TextBox
+                                    <TextBlock
                                         x:Name="less_sell_exoticGrid"
-                                        Width="90"
+                                        Width="70"
                                         Height="30"
                                         Margin="0,18,0,2"
                                         Background="GhostWhite"
