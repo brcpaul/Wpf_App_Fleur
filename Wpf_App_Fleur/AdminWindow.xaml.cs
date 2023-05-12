@@ -269,7 +269,7 @@ namespace Wpf_App_Fleur
         }
         private void btn_clickExportJson(object sender, RoutedEventArgs e)
         {
-            string name_file = "";
+            string name_file = "../Wpf_App_Fleur/exportJson.js";
             string mysql_query = @"SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
                        LEFT JOIN commande cmd ON c.id_client = cmd.id_client
                        WHERE cmd.date_commande IS NULL OR cmd.date_commande < DATE_SUB(NOW(), INTERVAL 6 MONTH);";
@@ -301,7 +301,7 @@ namespace Wpf_App_Fleur
         }
         private void btn_clickExportXml(object sender, RoutedEventArgs e)
         {
-            string name_file = "";
+            string name_file = "../Wpf_App_Fleur/exportXml.xml";
             string mysql_query = @"SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
                         INNER JOIN commande cmd ON c.id_client = cmd.id_client 
                         WHERE cmd.date_commande >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
