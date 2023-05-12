@@ -92,7 +92,7 @@ BEGIN
     SET @total_bouquets_mois = (
         SELECT COUNT(*)
         FROM commande
-        WHERE id_client = NEW.id_client
+        WHERE id_client = commande.id_client
         AND date_commande >= DATEADD(day,31,GETDATE())
     );
 
@@ -101,12 +101,12 @@ BEGIN
     IF @total_bouquets_mois > 5 THEN
         UPDATE client
         SET statut = 'OR'
-        WHERE id_client = NEW.id_client;
+        WHERE id_client = commande.id_client;
     #Fidélité Bronze si le client achète en moyenne un bouquet par mois alors une réduction de 5% est offerte 
     ELSEIF @total_bouquets_mois >= 1 THEN
         UPDATE client
         SET statut = 'BRONZE'
-        WHERE id_client = NEW.id_client;
+        WHERE id_client = commande.id_client;
     END IF;
 END //
 DELIMITER ;     #on rétablit le délimiteur à sa valeur par défaut ';'

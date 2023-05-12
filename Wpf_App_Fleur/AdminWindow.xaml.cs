@@ -39,11 +39,12 @@ namespace Wpf_App_Fleur
             this.commandeEtatFilter = "VINV";
             this.selectedClientId = "";
         }
+        /// Permet de changer l'état des commandes à filtrer
         public void ChangedCommandeEtat(object sender, EventArgs e)
         {
             RadioButton ck = sender as RadioButton;
 
-            commandeEtatFilter= "VINV";
+            commandeEtatFilter = "VINV";
             switch (ck.Content)
             {
                 case "Commande standard à vérifier":
@@ -64,6 +65,7 @@ namespace Wpf_App_Fleur
             }
             ShowCommandes();
         }
+        /// Permet d'afficher les commandes en utilisant les filtres renseignés
         public void ShowCommandes(object sender = null, RoutedEventArgs e = null)
         {
             MySqlCommand command;
@@ -72,7 +74,7 @@ namespace Wpf_App_Fleur
             if (boutiqueFilterBox == null) return;
 
             string commande_text = @"use fleur;
-                SELECT id_commande, MIN(co.id_client) as 'Id client', MIN(cl.prenom) as 'Prénom client', MIN(cl.nom) as 'Nom client',MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Composition perso', MIN(co.date_commande) as 'Date de commande', MIN(co.date_livraison) as 'Date de livraison', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
+                SELECT id_commande, MIN(co.id_client) as 'Id client', MIN(cl.prenom) as 'Prénom client', MIN(cl.nom) as 'Nom client',MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Composition perso', MIN(co.date_commande) as 'Date de commande', MIN(co.date_livraison) as 'Date de livraison', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co 
                 LEFT JOIN bouquet_perso bp ON co.id_bouquet=bp.id_bp
                 LEFT JOIN bouquet_standard bs ON co.id_bouquet=bs.id_bs
                 JOIN client cl ON cl.id_client=co.id_client
@@ -81,6 +83,10 @@ namespace Wpf_App_Fleur
                 LEFT JOIN produit pr ON co.est_standard=false and cb.id_produit=pr.id_produit
                 WHERE etat='" + commandeEtatFilter + @"' AND bo.adresse LIKE @boutique AND co.date_commande>=@dateCommandeStart AND co.date_commande <= @dateCommandeEnd
                 GROUP BY id_commande";
+
+            // On utilise LEFT JOIN pour récuperer les infos des bouquets car pour une commande le champ id_bouquet provient soit de bouquet_perso soit de bouquet_standard
+            // De la même manière, comme toutes les commandes ne sont pas forcément liées à des produits de composition_bouquet on utilise LEFT JOIN pour les récuperer
+            // Pour les infos client et boutique qui sont récupérées pour chaque commande peut importe son type on utilise JOIN 
 
             command = new MySqlCommand(commande_text, this.connexion);
             command.Parameters.AddWithValue("@boutique", "%" + boutiqueFilterBox.Text + "%");
@@ -95,11 +101,6 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             commandesDataGrid.ItemsSource = new DataView(dataTable);
         }
-        /// <summary>
-        /// Fonction qui permet de rechercher un produit sous le seuil d'alerte avec son id de produit
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void Search_ProductByName(object sender, RoutedEventArgs e)
         {
             MySqlCommand command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique WHERE p.id_produit LIKE '%" + Search_ProductName.Text + "%' and s.quantite < 10; ", this.connexion);
@@ -107,11 +108,6 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             produitsrup_DataGrid.ItemsSource = new DataView(dataTable);
         }
-        /// <summary>
-        /// Fonction qui permet de trouver tous les produits spous le seuil d'alerte issus d'une boutique dont on aura donner son id
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void SearchProduitsBoutiqueByID(object sender, RoutedEventArgs e)
         {
             MySqlCommand command = new MySqlCommand("SELECT b.id_boutique, p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique " +
@@ -120,11 +116,6 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             produitsrup_DataGrid.ItemsSource = new DataView(dataTable);
         }
-        /// <summary>
-        /// Fonction qui permet de rechercher un client à partir de son nom
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void SearchClientByName(object sender, RoutedEventArgs e)
         {
             MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client WHERE nom LIKE '%" + SearchClientName.Text + "%'", this.connexion);
@@ -132,11 +123,6 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             clientsDataGrid.ItemsSource = new DataView(dataTable);
         }
-        /// <summary>
-        /// Fonction qui permet de rechercher un client à partir de son id
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void SearchClientByID(object sender, RoutedEventArgs e)
         {
             MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client WHERE id_client LIKE '%" + SearchClientID.Text + "%'", this.connexion);
@@ -144,6 +130,12 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             clientsDataGrid.ItemsSource = new DataView(dataTable);
         }
+
+        /// <summary>
+        /// Fonction qui permet de récupérer les commandes d'un client particulier, et les affiches dans une table à part. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SelectedClientChanged(object sender, EventArgs e)
         {
             selectedClientId="";
@@ -177,12 +169,17 @@ namespace Wpf_App_Fleur
             dataTable.Load(command.ExecuteReader());
             clientDataGrid.ItemsSource = new DataView(dataTable);
         }
+        /// <summary>
+        /// Enregistre les modifications faites sur un client directement depuis l'interface graphique
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void ClientEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.EditAction != DataGridEditAction.Commit) return;
-            string clientId = ((DataRowView)clientsDataGrid.SelectedItem)["id_client"].ToString();
-            string modifiedColumn = (string)e.Column.Header;
-            string modifiedValue = ((TextBox)e.EditingElement).Text;
+            string clientId = ((DataRowView)clientsDataGrid.SelectedItem)["id_client"].ToString(); // Récupère l'id du client modifié 
+            string modifiedColumn = (string)e.Column.Header; // Récupère la colonne modifiée
+            string modifiedValue = ((TextBox)e.EditingElement).Text; // Et enfin sa valeur
             if (modifiedValue == "")
             {
                 modifiedValue = null;
@@ -282,7 +279,6 @@ namespace Wpf_App_Fleur
         {
             if (this.currentPage == (string)((TabItem)tabControl?.SelectedItem)?.Header) return;
             this.currentPage = (string)((TabItem)tabControl.SelectedItem).Header;
-            //initialisation des données que l'on va réutiliser plusieurs fois après
             DataTable dataTable;
             MySqlCommand command;
             MySqlDataReader reader;
@@ -292,12 +288,10 @@ namespace Wpf_App_Fleur
                     ShowClients();
                     break;
                 case "Etat des Stocks":
-                    //requête sql permettant d'avoir accès au éléments des produits dont la quantité est inférieur à 10 (autrement dit accède à tous les éléments qui sont sous le seuil d'alerte)
                     command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique  WHERE s.quantite < 10;", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
                     produitsrup_DataGrid.ItemsSource = new DataView(dataTable);
-                    //requête sql qui permet d'afficher tous les produits 
                     command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique;", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
@@ -366,7 +360,6 @@ namespace Wpf_App_Fleur
                     reader.Close();
                     break;
                 case "Déconnexion":
-                    //Permet de revenir au formulaire de connexion si le vendeur souhaite se déconnecter de la page actuelle
                     MainWindow main = new MainWindow();
                     main.Show();
                     Window.GetWindow(this).Close();
@@ -375,10 +368,6 @@ namespace Wpf_App_Fleur
                     break;
             };
         }
-        /// <summary>
-        /// Fonction qui calcule le prix moyen des bouquets achetés
-        /// </summary>
-        /// <param name="connection"></param>
         public void prix_moyen_du_bouquet_achete(MySqlConnection connection)
         {
             MySqlCommand command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
@@ -392,15 +381,9 @@ namespace Wpf_App_Fleur
         {
 
         }
-        /// <summary>
-        /// Fonction qui permet d'exporter une requête sql en format Json une fois qu'on a cliqué sur le bouton
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btn_clickExportJson(object sender, RoutedEventArgs e)
         {
             string name_file = "exportJson.json";
-            //requête sql pour obtenir les clients n’ayant pas commandé depuis plus de 6 mois
             string mysql_query = @"SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
                        LEFT JOIN commande cmd ON c.id_client = cmd.id_client
                        WHERE cmd.date_commande IS NULL OR cmd.date_commande < DATE_SUB(NOW(), INTERVAL 6 MONTH);";
@@ -430,15 +413,9 @@ namespace Wpf_App_Fleur
                 }
             }
         }
-        /// <summary>
-        /// Fonction qui permet d'exporter en format Xml les données issues d'une requête sql une fois qu'on a cliquer sur le bouton
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btn_clickExportXml(object sender, RoutedEventArgs e)
         {
             string name_file = "exportXml.xml";
-            //requête sql qui permet d'obtenir les clients ayant commandé plusieurs fois durant le dernier mois 
             string mysql_query = @"SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte, c.statut FROM client c
                         INNER JOIN commande cmd ON c.id_client = cmd.id_client 
                         WHERE cmd.date_commande >= DATE_SUB(NOW(), INTERVAL 1 MONTH)

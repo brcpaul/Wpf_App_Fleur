@@ -29,5 +29,3 @@ SELECT c.id_client, c.nom, c.prenom, c.tel, c.mail, c.adresse_factu, c.num_carte
                         INNER JOIN commande cmd ON c.id_client = cmd.id_client 
                         WHERE cmd.date_commande >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
                         GROUP BY c.id_client HAVING COUNT(*) > 1;
-                        
-                        
