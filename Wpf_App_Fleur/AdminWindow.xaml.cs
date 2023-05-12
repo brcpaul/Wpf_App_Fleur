@@ -27,37 +27,45 @@ namespace Wpf_App_Fleur
     {
         private MySqlConnection connexion;
         private string currentPage;
+        private string commandeEtatFilter;
         public AdminWindow(MySqlConnection connexion)
         {
             InitializeComponent();
             this.connexion = connexion;
             this.currentPage = null;
+            this.commandeEtatFilter = "VINV";
+        }
+        public void ChangedCommandeEtat(object sender, EventArgs e)
+        {
+            RadioButton ck = sender as RadioButton;
+
+            commandeEtatFilter= "VINV";
+            switch (ck.Content)
+            {
+                case "Commande standard à vérifier":
+                    commandeEtatFilter = "VINV";
+                    break;
+                case "Commande personnalisée à vérifier":
+                    commandeEtatFilter = "CPAV";
+                    break;
+                case "Commande complète":
+                    commandeEtatFilter = "CC";
+                    break;
+                case "Commande à livrer":
+                    commandeEtatFilter = "CAL";
+                    break;
+                case "Commande livrée":
+                    commandeEtatFilter = "CL";
+                    break;
+            }
+            ShowCommandes();
         }
         public void ShowCommandes(object sender = null, RoutedEventArgs e = null)
         {
             MySqlCommand command;
             DataTable dataTable;
-            RadioButton ck = sender as RadioButton;
 
-            string etatCommande = "VINV";
-            switch (ck.Content)
-            {
-                case "Commande standard à vérifier":
-                    etatCommande = "VINV";
-                    break;
-                case "Commande personnalisée à vérifier":
-                    etatCommande = "CPAV";
-                    break;
-                case "Commande complète":
-                    etatCommande = "CC";
-                    break;
-                case "Commande à livrer":
-                    etatCommande = "CAL";
-                    break;
-                case "Commande livrée":
-                    etatCommande = "CL";
-                    break;
-            }
+            if (boutiqueFilterBox == null) return;
 
             string commande_text = @"use fleur;
                 SELECT id_commande, MIN(co.id_client) as 'Id client', MIN(cl.prenom) as 'Prénom client', MIN(cl.nom) as 'Nom client',MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Composition perso', MIN(co.date_commande) as 'Date de commande', MIN(co.date_livraison) as 'Date de livraison', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
@@ -67,10 +75,19 @@ namespace Wpf_App_Fleur
                 JOIN boutique bo ON co.id_boutique=bo.id_boutique
                 LEFT JOIN composition_bouquet cb ON co.est_standard=false and cb.id_bp=co.id_bouquet
                 LEFT JOIN produit pr ON co.est_standard=false and cb.id_produit=pr.id_produit
-                WHERE etat='" + etatCommande + @"'
+                WHERE etat='" + commandeEtatFilter + @"' AND bo.adresse LIKE @boutique AND co.date_commande>=@dateCommandeStart
                 GROUP BY id_commande";
 
             command = new MySqlCommand(commande_text, this.connexion);
+            command.Parameters.AddWithValue("@boutique", "%" + boutiqueFilterBox.Text + "%");
+            if (dateStartFilterBox.SelectedDate.HasValue)
+            {
+                command.Parameters.AddWithValue("@dateCommandeStart",dateStartFilterBox.SelectedDate.Value);
+            }
+            else
+            {
+                command.Parameters.AddWithValue("@dateCommandeStart",new DateTime(0));
+            }
             dataTable = new DataTable();
             dataTable.Load(command.ExecuteReader());
             commandesDataGrid.ItemsSource = new DataView(dataTable);
@@ -101,6 +118,7 @@ namespace Wpf_App_Fleur
                 clientDataGrid.ItemsSource=null;
             }
             if (client_id=="") return;
+
             string commande_text = @"use fleur;
                 SELECT id_commande,MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Composition perso', MIN(co.date_commande) as 'Date de commande', MIN(co.date_livraison) as 'Date de livraison', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
                 LEFT JOIN bouquet_perso bp ON co.id_bouquet=bp.id_bp
@@ -130,6 +148,9 @@ namespace Wpf_App_Fleur
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
                     clientsDataGrid.ItemsSource = new DataView(dataTable);
+                    break;
+                case "Commandes":
+                    ShowCommandes();
                     break;
                 case "Statistiques":
                     command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
