@@ -108,7 +108,7 @@
                     <Grid Grid.Row="0" Margin="10">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <Label>Produit en rupture (inf à 3)</Label>
+                                <Label>Produit en rupture (inf à 10)</Label>
                                 <StackPanel Margin="20,0" Orientation="Horizontal">
                                     <Label>Par son ID</Label>
                                     <TextBox

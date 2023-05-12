@@ -37,17 +37,16 @@
                 <PasswordBox
                     Name="txtPassword"
                     Background="GhostWhite"
-                    FontSize="18" />
+                    FontSize="18"                     
+                    />
                 <StackPanel Orientation="Horizontal">
                     <CheckBox
                         x:Name="ShowPasswordCheckBox"
                         Width="15"
                         Height="15"
                         Margin="10,11,0,10"
-                        HorizontalAlignment="Left"
-                        Checked="show_password_checked"
-                        Unchecked="show_password_unchecked" />
-                    <Label Margin="0,5,10,5" Content="show password" />
+                        HorizontalAlignment="Left"/>
+                    <Label Margin="0,5,10,5" Content="Afficher le mot de passe" />
                 </StackPanel>
                 <Button
                     Name="btnConnection"
