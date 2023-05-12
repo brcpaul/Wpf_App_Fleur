@@ -17,6 +17,7 @@ using System.Xml;
 using System.Data;
 using System.Text.Json;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 
 namespace Wpf_App_Fleur
 {
@@ -29,12 +30,14 @@ namespace Wpf_App_Fleur
         private string currentPage;
         private string commandeEtatFilter;
         private static Random random = new Random();
+        private string selectedClientId;
         public AdminWindow(MySqlConnection connexion)
         {
             InitializeComponent();
             this.connexion = connexion;
             this.currentPage = null;
             this.commandeEtatFilter = "VINV";
+            this.selectedClientId = "";
         }
         public void ChangedCommandeEtat(object sender, EventArgs e)
         {
@@ -123,16 +126,20 @@ namespace Wpf_App_Fleur
         }
         public void SelectedClientChanged(object sender, EventArgs e)
         {
-            string client_id="";
+            selectedClientId="";
             try
             {
-                client_id = ((DataRowView)clientsDataGrid.SelectedItem)?["id_client"]?.ToString();
+                selectedClientId= ((DataRowView)clientsDataGrid.SelectedItem)?["id_client"]?.ToString();
             } 
             catch {
                 clientDataGrid.ItemsSource=null;
             }
-            if (client_id=="") return;
-
+            if (selectedClientId == "")
+            {
+                SupprimerClientButton.Visibility = Visibility.Hidden;
+                return;
+            }
+            SupprimerClientButton.Visibility = Visibility.Visible;
             string commande_text = @"use fleur;
                 SELECT id_commande,MIN(co.prix_tot) as 'Prix total', MIN(bs.composition) as 'Composition standard', GROUP_CONCAT(CONCAT(cb.quantite,' ',pr.nom)) as 'Composition perso', MIN(co.date_commande) as 'Date de commande', MIN(co.date_livraison) as 'Date de livraison', MIN(co.etat) as 'Etat',MIN(bo.adresse) as 'Boutique' FROM commande co
                 LEFT JOIN bouquet_perso bp ON co.id_bouquet=bp.id_bp
@@ -141,13 +148,69 @@ namespace Wpf_App_Fleur
                 JOIN boutique bo ON co.id_boutique=bo.id_boutique
                 LEFT JOIN composition_bouquet cb ON co.est_standard=false and cb.id_bp=co.id_bouquet
                 LEFT JOIN produit pr ON co.est_standard=false and cb.id_produit=pr.id_produit
-                WHERE co.id_client='" + client_id + @"'
+                WHERE co.id_client='" + selectedClientId + @"'
                 GROUP BY id_commande";
 
             MySqlCommand command = new MySqlCommand(commande_text, this.connexion);
             DataTable dataTable = new DataTable();
             dataTable.Load(command.ExecuteReader());
             clientDataGrid.ItemsSource = new DataView(dataTable);
+        }
+        public void ClientEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction != DataGridEditAction.Commit) return;
+            string clientId = ((DataRowView)clientsDataGrid.SelectedItem)["id_client"].ToString();
+            string modifiedColumn = (string)e.Column.Header;
+            string modifiedValue = ((TextBox)e.EditingElement).Text;
+            if (modifiedValue == "")
+            {
+                modifiedValue = null;
+            }
+            string commandeText = "UPDATE client set " + modifiedColumn + "=@value WHERE id_client=@clientId;";
+            using (var cmd = new MySqlCommand(commandeText, connexion))
+            {
+                cmd.Parameters.AddWithValue("@column", modifiedColumn);
+                cmd.Parameters.AddWithValue("@value", modifiedValue);
+                cmd.Parameters.AddWithValue("@clientId", clientId);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Client modifié !");
+                }
+                catch
+                {
+                    MessageBox.Show("Le client n'a pas pu être modifié...");
+                    e.Cancel = true;
+                    (sender as DataGrid).CancelEdit(DataGridEditingUnit.Cell);
+
+                }
+            }
+            //ShowClients();
+        }
+        public void SupprimerClient(object sender, RoutedEventArgs e)
+        {
+            string commandeText = "DELETE FROM client WHERE id_client=@clientId;";
+            using (var cmd = new MySqlCommand(commandeText, connexion))
+            {
+                cmd.Parameters.AddWithValue("@clientId", selectedClientId);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Client supprimé !");
+                }
+                catch
+                {
+                    MessageBox.Show("Le client n'a pas pu être supprimé...");
+                }
+            }
+            ShowClients();
+        }
+        public void ShowClients()
+        {
+            MySqlCommand command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;", this.connexion);
+            DataTable dataTable = new DataTable();
+            dataTable.Load(command.ExecuteReader());
+            clientsDataGrid.ItemsSource = new DataView(dataTable);
         }
         public static string RandomString(int length)
         {
@@ -193,6 +256,7 @@ namespace Wpf_App_Fleur
             }
 
         }
+        
         public void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.currentPage == (string)((TabItem)tabControl?.SelectedItem)?.Header) return;
@@ -203,10 +267,7 @@ namespace Wpf_App_Fleur
             switch (this.currentPage)
             {
                 case "Clients":
-                    command = new MySqlCommand("SELECT id_client,nom,prenom,tel,mail,adresse_factu,statut FROM client;", this.connexion);
-                    dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    clientsDataGrid.ItemsSource = new DataView(dataTable);
+                    ShowClients();
                     break;
                 case "Etat des Stocks":
                     command = new MySqlCommand("SELECT p.id_produit, p.nom, p.prix, p.disponibilite, s.quantite, b.id_boutique FROM produit p JOIN stock s ON p.id_produit = s.id_produit JOIN boutique b ON b.id_boutique = s.id_boutique  WHERE s.quantite < 3;", this.connexion);

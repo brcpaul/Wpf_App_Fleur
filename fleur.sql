@@ -76,8 +76,8 @@ CREATE  TABLE IF NOT EXISTS commande (
     date_commande date, 					#Date of the order
     prix_tot float,							#Final price of the command
     etat VARCHAR(40), 						#State of the order
-    CONSTRAINT id_number_client FOREIGN KEY (id_client) REFERENCES client (id_client),
-    CONSTRAINT id_number_boutique FOREIGN KEY (id_boutique) REFERENCES boutique (id_boutique),
+    CONSTRAINT id_number_client FOREIGN KEY (id_client) REFERENCES client (id_client) ON DELETE CASCADE,
+    CONSTRAINT id_number_boutique FOREIGN KEY (id_boutique) REFERENCES boutique (id_boutique) ON DELETE CASCADE, 
 	PRIMARY KEY (id_commande));
 /*
 CREATE USER 'bozo'@'localhost' IDENTIFIED BY 'bozo';

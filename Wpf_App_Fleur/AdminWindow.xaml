@@ -79,15 +79,19 @@
                     <DataGrid
                         x:Name="clientsDataGrid"
                         Grid.Row="1"
-                        SelectedCellsChanged="SelectedClientChanged" />
+                        SelectedCellsChanged="SelectedClientChanged" 
+                        CellEditEnding="ClientEditEnding"
+                        />
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="28" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" Margin="5">
-                            <TextBlock Visibility="Hidden">Commandes du client sélectionné</TextBlock>
-                            <TextBlock>Selectionnez un client pour voir ses commandes</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Selectionnez un client pour voir ses commandes</TextBlock>
+                                <Button x:Name="SupprimerClientButton" Visibility="Hidden" Click="SupprimerClient" Margin="20 0">Supprimer le client</Button>
+                            </StackPanel>
                         </Grid>
                         <DataGrid x:Name="clientDataGrid" Grid.Row="1" />
                     </Grid>
