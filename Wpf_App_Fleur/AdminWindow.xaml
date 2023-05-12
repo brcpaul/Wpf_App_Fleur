@@ -30,7 +30,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Click="btn_clickExportJson"
-                            Content="Export en format Xml" />
+                            Content="Export en format Json" />
                     </StackPanel>
                 </Grid>
             </TabItem>
