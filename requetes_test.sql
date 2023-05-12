@@ -16,3 +16,11 @@ WHERE c.est_standard = true
 GROUP BY bs.id_bs
 ORDER BY total_commandes DESC
 LIMIT 1;
+
+SELECT c.id_boutique, SUM(c.prix_tot) AS chiffre_affaires
+FROM commande c
+GROUP BY c.id_boutique
+ORDER BY chiffre_affaires DESC
+LIMIT 10;
+
+select avg(prix) from bouquet_standard;

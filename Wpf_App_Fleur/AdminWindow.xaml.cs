@@ -224,7 +224,7 @@ namespace Wpf_App_Fleur
                     command = new MySqlCommand("select avg(prix) from bouquet_standard;", this.connexion);
                     dataTable = new DataTable();
                     dataTable.Load(command.ExecuteReader());
-                    //prix_moyenTxt = new DataView(dataTable);
+                    prix_moyenTxt.ItemsSource = new DataView(dataTable);
                     command = new MySqlCommand("select id_client, SUM(prix_tot) as somme_total_depense from commande where Month(date_commande) = Month(now()) " +
                         "Group by id_client Order by somme_total_depense DESC limit 1; ", this.connexion);
                     dataTable = new DataTable();

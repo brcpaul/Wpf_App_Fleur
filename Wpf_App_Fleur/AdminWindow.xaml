@@ -173,7 +173,7 @@
                                     FontSize="14" />
                             </StackPanel>
                             <StackPanel Margin="80,0,0,0">
-                                <TextBox
+                                <DataGrid
                                     x:Name="prix_moyenTxt"
                                     Width="100"
                                     Height="50"
